@@ -799,64 +799,56 @@ var artCanvas = null, artCtx = null, artHistory = [];
 var holdInterval = null;
 
 // ---- Speech + Volume ----
-// Uses pre-recorded MP3s from translate.google.com TTS for 100% cross-browser reliability.
-// Falls back to Web Speech API if audio fails to load.
 var volLevel = 0.5, muted = false;
-var audioCache = {};
+var sy = window.speechSynthesis;
+var _voice = null;
+var _voiceReady = false;
 
-// Google Translate TTS gives us free reliable letter audio
-function getAudioURL(letter) {
-  return 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=' + encodeURIComponent(letter);
+function _loadVoice() {
+  var voices = sy.getVoices();
+  if (!voices.length) return;
+  // Preferred voices in order
+  var prefs = ['google us english','samantha','karen','microsoft zira','daniel','victoria','alex'];
+  for (var p = 0; p < prefs.length; p++) {
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].name.toLowerCase().indexOf(prefs[p]) > -1) {
+        _voice = voices[i]; _voiceReady = true; return;
+      }
+    }
+  }
+  // Any English voice
+  for (var i = 0; i < voices.length; i++) {
+    if (voices[i].lang && voices[i].lang.indexOf('en') === 0) {
+      _voice = voices[i]; _voiceReady = true; return;
+    }
+  }
+  // Last resort: first available
+  if (voices.length) { _voice = voices[0]; _voiceReady = true; }
 }
+
+// Poll until voices are ready (Chrome async loads them)
+var _voicePoll = setInterval(function() {
+  _loadVoice();
+  if (_voiceReady) clearInterval(_voicePoll);
+}, 100);
+if (sy.onvoiceschanged !== undefined) sy.onvoiceschanged = _loadVoice;
 
 function speak(text) {
   if (muted || volLevel === 0) return;
-  var key = text.toLowerCase();
-
-  // Use cached Audio object if available
-  if (audioCache[key]) {
-    try {
-      audioCache[key].volume = volLevel;
-      audioCache[key].currentTime = 0;
-      audioCache[key].play();
-    } catch(e) { speakFallback(text); }
-    return;
-  }
-
-  // Create and cache a new Audio object
   try {
-    var audio = new Audio(getAudioURL(key));
-    audio.volume = volLevel;
-    audioCache[key] = audio;
-    audio.play().catch(function() { speakFallback(text); });
-  } catch(e) { speakFallback(text); }
-}
-
-// Web Speech API fallback
-function speakFallback(text) {
-  try {
-    var sy = window.speechSynthesis;
-    if (sy.paused) sy.resume();
-    sy.cancel();
-    setTimeout(function() {
-      var u = new SpeechSynthesisUtterance(text);
-      u.rate = 0.85; u.pitch = 1.2; u.volume = volLevel;
-      sy.speak(u);
-    }, 50);
+    if (sy.speaking) sy.cancel();
+    if (sy.paused)   sy.resume();
+    var u = new SpeechSynthesisUtterance(text);
+    u.rate   = 0.85;
+    u.pitch  = 1.2;
+    u.volume = volLevel;
+    if (_voice) u.voice = _voice;
+    // Small delay prevents Chrome from swallowing utterances after cancel()
+    setTimeout(function() { sy.speak(u); }, 30);
   } catch(e) {}
 }
 
-// Pre-load all letters and numbers silently on page load
-(function preload() {
-  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
-  chars.forEach(function(c) {
-    var audio = new Audio(getAudioURL(c));
-    audio.preload = 'auto';
-    audioCache[c] = audio;
-  });
-})();
-
-function pickVoice() {}
+function pickVoice() { _loadVoice(); }
 
 function setVolume(val) {
   volLevel = parseInt(val) / 100;
@@ -870,7 +862,7 @@ function toggleMute() {
     volLevel = 0.5;
     document.getElementById('vol-slider').value = 50;
   }
-  if (muted) synth.cancel();
+  if (muted) sy.cancel();
   updateVolUI();
 }
 
