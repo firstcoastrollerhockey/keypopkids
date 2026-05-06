@@ -1249,21 +1249,23 @@ document.getElementById('art-modal').addEventListener('click', function(e) {
 // WORD MODE
 // ============================================================
 var WORD_LISTS = {
-  easy:   ['CAT','DOG','SUN','HAT','BIG','RED','RUN','MAP','CUP','FUN','PIG','BUS','HOP','WET','BOX'],
-  medium: ['FROG','SHIP','JUMP','CLUB','DESK','LAMP','TREE','BOOK','FISH','BIRD','HAND','RAIN','CAKE','PLAY','BALL'],
-  hard:   ['CLOUD','BRAVE','FLUTE','GRAPE','STONE','PIANO','TRUCK','GLOBE','DANCE','SHARP','FLAME','DRINK','PLANT','CLEAN','SPORT']
+  toddler: ['UP','GO','NO','DO','IT','AT','HI','ME','MY','WE','BE','ON','IN','IS','AN'],
+  easy:    ['CAT','DOG','SUN','HAT','BIG','RED','RUN','MAP','CUP','FUN','PIG','BUS','HOP','BOX','ANT','COW','EGG','FLY','HEN','JAM'],
+  medium:  ['FROG','SHIP','JUMP','LAMP','TREE','BOOK','FISH','BIRD','HAND','RAIN','CAKE','PLAY','BALL','KITE','MOON','STAR','DUCK','BEAR','WOLF','FAWN'],
+  hard:    ['CLOUD','BRAVE','FLUTE','GRAPE','STONE','PIANO','TRUCK','GLOBE','DANCE','PLANT','CLEAN','SPORT','SWEET','SMILE','TIGER','BUNNY','JUNGLE','COOKIE','ROCKET','CRAYON']
 };
+var DIFF_ORDER = ['toddler','easy','medium','hard'];
 var wordMode = false;
 var currentWord = '';
 var wordPos = 0;
 var wordStreak = 0;
 var wordsDone = 0;
-var wordDifficulty = 'easy';
-var wordDiffCycle = 0; // every 5 words bump difficulty
+var wordDifficulty = 'toddler';
+var wordDiffCycle = 0;
 
 function startWordMode() {
   wordMode = true;
-  wordStreak = 0; wordsDone = 0; wordDiffCycle = 0; wordDifficulty = 'easy';
+  wordStreak = 0; wordsDone = 0; wordDiffCycle = 0; wordDifficulty = 'toddler';
   document.getElementById('word-overlay').classList.add('on');
   nextWord();
 }
@@ -1274,18 +1276,28 @@ function stopWordMode() {
 }
 
 function nextWord() {
-  // Cycle difficulty
-  if (wordsDone > 0 && wordsDone % 5 === 0) {
-    if (wordDifficulty === 'easy') wordDifficulty = 'medium';
-    else if (wordDifficulty === 'medium') wordDifficulty = 'hard';
+  // Advance difficulty every 10 words
+  if (wordsDone > 0 && wordsDone % 10 === 0) {
+    var curIdx = DIFF_ORDER.indexOf(wordDifficulty);
+    if (curIdx < DIFF_ORDER.length - 1) {
+      wordDifficulty = DIFF_ORDER[curIdx + 1];
+      document.getElementById('word-result').textContent = 'Level Up!';
+      document.getElementById('word-result').style.color = '#ffe66b';
+    }
   }
+  // Pick a word, avoid repeating same one twice
   var list = WORD_LISTS[wordDifficulty];
-  currentWord = list[Math.floor(Math.random() * list.length)];
+  var newWord;
+  do { newWord = list[Math.floor(Math.random() * list.length)]; }
+  while (newWord === currentWord && list.length > 1);
+  currentWord = newWord;
   wordPos = 0;
+  var labels = { toddler: 'Toddler', easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+  document.getElementById('word-prompt').textContent = labels[wordDifficulty] + ' - Type the word!';
+  if (!document.getElementById('word-result').textContent) {
+    document.getElementById('word-result').textContent = '';
+  }
   renderWordBoxes();
-  document.getElementById('word-prompt').textContent = 'Type the word!';
-  document.getElementById('word-result').textContent = '';
-  // Speak the word
   speak(currentWord.toLowerCase());
 }
 
