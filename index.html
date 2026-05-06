@@ -89,7 +89,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 #vol-wrap { position: absolute; bottom: 20px; left: 20px; display: flex; align-items: center; gap: 10px; z-index: 20; background: #ffffff10; backdrop-filter: blur(10px); border: 1px solid #ffffff20; border-radius: 999px; padding: 8px 16px; }
 #vol-icon { font-size: 20px; cursor: pointer; user-select: none; line-height: 1; transition: transform .15s; }
 #vol-icon:hover { transform: scale(1.2); }
-#vol-slider { -webkit-appearance: none; appearance: none; width: 100px; height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--c2) 90%, #ffffff30 90%); outline: none; cursor: pointer; }
+#vol-slider { -webkit-appearance: none; appearance: none; width: 100px; height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--c2) 50%, #ffffff30 50%); outline: none; cursor: pointer; }
 #vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--c2); cursor: pointer; box-shadow: 0 0 8px #6bffde88; }
 #vol-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; border: none; background: var(--c2); cursor: pointer; }
 #vol-label { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--c2); min-width: 32px; text-align: right; }
@@ -179,8 +179,8 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 
   <div id="vol-wrap">
     <span id="vol-icon" onclick="toggleMute()">&#128266;</span>
-    <input id="vol-slider" type="range" min="0" max="100" value="90" oninput="setVolume(this.value)">
-    <span id="vol-label">90%</span>
+    <input id="vol-slider" type="range" min="0" max="100" value="50" oninput="setVolume(this.value)">
+    <span id="vol-label">50%</span>
   </div>
 
   <!-- ART MODAL lives INSIDE playground so it appears above fullscreen -->
@@ -232,7 +232,7 @@ var holdInterval = null;
 // ---- Speech + Volume ----
 // Uses pre-recorded MP3s from translate.google.com TTS for 100% cross-browser reliability.
 // Falls back to Web Speech API if audio fails to load.
-var volLevel = 0.9, muted = false;
+var volLevel = 0.5, muted = false;
 var audioCache = {};
 
 // Google Translate TTS gives us free reliable letter audio
@@ -298,8 +298,8 @@ function setVolume(val) {
 function toggleMute() {
   muted = !muted;
   if (!muted && volLevel === 0) {
-    volLevel = 0.9;
-    document.getElementById('vol-slider').value = 90;
+    volLevel = 0.5;
+    document.getElementById('vol-slider').value = 50;
   }
   if (muted) synth.cancel();
   updateVolUI();
@@ -549,52 +549,46 @@ function buildImage() {
   var m = Math.floor(elapsed / 60), s = elapsed % 60;
   var ts = m + ':' + (s < 10 ? '0' + s : s);
 
-  var pw = 440, ph = name ? 256 : 224;
-  var px = 30,  py = H - ph - 30;
+  // Slim footer strip across the full bottom
+  var stripH = 44;
+  var sy2 = H - stripH;
 
-  // Panel
   ctx.save();
-  ctx.globalAlpha = .92;
+  ctx.globalAlpha = 0.78;
   ctx.fillStyle = '#0d0b1e';
-  ctx.beginPath();
-  ctx.moveTo(px+20, py);
-  ctx.lineTo(px+pw-20, py); ctx.quadraticCurveTo(px+pw, py, px+pw, py+20);
-  ctx.lineTo(px+pw, py+ph-20); ctx.quadraticCurveTo(px+pw, py+ph, px+pw-20, py+ph);
-  ctx.lineTo(px+20, py+ph); ctx.quadraticCurveTo(px, py+ph, px, py+ph-20);
-  ctx.lineTo(px, py+20); ctx.quadraticCurveTo(px, py, px+20, py);
-  ctx.closePath();
-  ctx.fill();
+  ctx.fillRect(0, sy2, W, stripH);
   ctx.globalAlpha = 1;
-  ctx.strokeStyle = '#ffffff25'; ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.restore();
+  ctx.strokeStyle = '#ffffff15';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, sy2); ctx.lineTo(W, sy2); ctx.stroke();
 
-  var ly = py + 44;
+  // Left: name or title
+  ctx.font = 'bold 13px sans-serif';
+  ctx.fillStyle = name ? '#ff6bdf' : '#ffe66b';
+  ctx.textAlign = 'left';
+  ctx.fillText(name ? name + "'s Masterpiece" : 'KeyPopKids! Masterpiece', 20, sy2 + 17);
+  ctx.font = '11px sans-serif';
+  ctx.fillStyle = '#ffffff44';
+  ctx.fillText('keypopkids.com', 20, sy2 + 34);
 
-  ctx.save();
-  if (name) {
-    ctx.font = 'bold 26px sans-serif'; ctx.fillStyle = '#ff6bdf';
-    ctx.fillText(name + "'s Masterpiece", px+22, ly); ly += 28;
-    ctx.font = '13px sans-serif'; ctx.fillStyle = '#ffffff55';
-    ctx.fillText('KeyPopKids! - The Magical Keyboard Adventure', px+22, ly); ly += 26;
-  } else {
-    ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#ffe66b';
-    ctx.fillText('My KeyPopKids! Masterpiece', px+22, ly); ly += 36;
-  }
+  // Center: stats in one line
+  ctx.textAlign = 'center';
+  ctx.font = '12px sans-serif';
+  ctx.fillStyle = '#ffffffbb';
+  ctx.fillText(
+    stats.keys + ' keys  ·  ' + stats.letters + ' letters  ·  ' + stats.numbers + ' numbers  ·  ' + stats.emojis + ' emojis  ·  ' + ts,
+    W / 2, sy2 + 17
+  );
 
-  ctx.strokeStyle = '#ffffff18'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(px+22, ly); ctx.lineTo(px+pw-22, ly); ctx.stroke();
-  ly += 22;
+  // Right: date
+  ctx.textAlign = 'right';
+  ctx.font = 'bold 12px sans-serif';
+  ctx.fillStyle = '#ffe66b';
+  ctx.fillText(dateStr, W - 20, sy2 + 17);
+  ctx.font = '11px sans-serif';
+  ctx.fillStyle = '#ffffff44';
+  ctx.fillText('The Magical Keyboard Adventure', W - 20, sy2 + 34);
 
-  ctx.font = '15px sans-serif'; ctx.fillStyle = '#ffffffcc';
-  ctx.fillText('Keys Pressed:  ' + stats.keys, px+22, ly); ly += 26;
-  ctx.fillText('Letters: ' + stats.letters + '     Numbers: ' + stats.numbers, px+22, ly); ly += 26;
-  ctx.fillText('Emojis Triggered: ' + stats.emojis, px+22, ly); ly += 26;
-  ctx.fillText('Session Time: ' + ts, px+22, ly); ly += 26;
-  ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = '#ffe66b';
-  ctx.fillText('Date: ' + dateStr, px+22, ly); ly += 22;
-  ctx.font = '11px sans-serif'; ctx.fillStyle = '#ffffff33';
-  ctx.fillText('keypopkids.com  |  The Magical Keyboard Adventure', px+22, ly);
   ctx.restore();
 
   // Watermark
