@@ -682,9 +682,9 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 <div id="playground">
   <canvas id="art-canvas"></canvas>
   <div id="hint">Press any key to begin your adventure!</div>
-  <div id="audio-unlock" onclick="unlockAndDismiss()" style="position:absolute;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:rgba(5,4,16,0.5);">
-    <div style="font-family:'Fredoka One',cursive;font-size:clamp(28px,5vw,52px);color:#fff;text-align:center;margin-bottom:16px;filter:drop-shadow(0 0 20px #ff6bdf88);">&#128266; Tap to Start!</div>
-    <div style="font-size:16px;color:#ffffff66;font-family:'Nunito',sans-serif;">Tap or click anywhere to enable sounds</div>
+  <div id="audio-unlock" onclick="unlockAndDismiss()" style="position:absolute;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:rgba(5,4,16,0.7);">
+    <div style="background:linear-gradient(135deg,#ff6bdf,#6b9fff);border:none;color:white;font-family:'Fredoka One',cursive;font-size:clamp(24px,5vw,44px);padding:24px 60px;border-radius:999px;box-shadow:0 0 60px #ff6bdf99;margin-bottom:20px;animation:btnpulse 2s ease-in-out infinite;">&#128266; Tap to Start!</div>
+    <div style="font-size:15px;color:#ffffff66;font-family:'Nunito',sans-serif;">Click or tap anywhere to enable sounds then start typing</div>
   </div>
 
   <!-- Badge toast (fullscreen-safe, inside playground) -->
@@ -804,24 +804,73 @@ var holdInterval = null;
 
 // ---- Speech + Volume ----
 var volLevel = 0.5, muted = false;
+var audioCtx = null;
+var speechUnlocked = false;
+var selectedVoice = null;
 
-// The ONLY reliable cross-browser approach:
-// Call speechSynthesis.speak() directly inside the keydown handler.
-// No caching, no polling, no async — just speak immediately.
+// Called on first tap — unlocks both AudioContext and SpeechSynthesis
+function unlockAudioContext() {
+  // Create and resume AudioContext (unlocks Web Audio)
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  } catch(e) {}
+
+  // Pick best available voice right now
+  var voices = window.speechSynthesis.getVoices();
+  var prefs = ['google us english','samantha','karen','zira','daniel','victoria','alex','google'];
+  for (var p = 0; p < prefs.length; p++) {
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].name.toLowerCase().indexOf(prefs[p]) > -1) {
+        selectedVoice = voices[i]; break;
+      }
+    }
+    if (selectedVoice) break;
+  }
+  if (!selectedVoice) {
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].lang && voices[i].lang.indexOf('en') === 0) {
+        selectedVoice = voices[i]; break;
+      }
+    }
+  }
+  if (!selectedVoice && voices.length) selectedVoice = voices[0];
+
+  // Fire a warm-up utterance to unlock SpeechSynthesis
+  try {
+    var warmup = new SpeechSynthesisUtterance('');
+    warmup.volume = 0;
+    if (selectedVoice) warmup.voice = selectedVoice;
+    window.speechSynthesis.speak(warmup);
+  } catch(e) {}
+
+  speechUnlocked = true;
+}
+
 function speak(text) {
-  if (muted || volLevel === 0) return;
-  if (!window.speechSynthesis) return;
+  if (muted || volLevel === 0 || !speechUnlocked) return;
   try {
     window.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
     u.volume = volLevel;
-    u.rate   = 0.9;
-    u.pitch  = 1.0;
+    u.rate   = 0.85;
+    u.pitch  = 1.1;
+    if (selectedVoice) u.voice = selectedVoice;
     window.speechSynthesis.speak(u);
   } catch(e) {}
 }
 
 function pickVoice() {}
+
+// Pre-load voices list as soon as possible so they're ready when user taps
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices(); // triggers async load in Chrome
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = function() {
+      window.speechSynthesis.getVoices(); // cache internally
+    };
+  }
+}
 
 function setVolume(val) {
   volLevel = parseInt(val) / 100;
@@ -835,7 +884,7 @@ function toggleMute() {
     volLevel = 0.5;
     document.getElementById('vol-slider').value = 50;
   }
-  if (muted) sy.cancel();
+  if (muted) { try { window.speechSynthesis.cancel(); } catch(e){} }
   updateVolUI();
 }
 
@@ -859,13 +908,7 @@ function updateVolUI() {
 
 // ---- Enter / Exit ----
 function unlockAndDismiss() {
-  // Fire a silent utterance to unlock Chrome's audio context on first interaction
-  try {
-    window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(' ');
-    u.volume = 0.01;
-    window.speechSynthesis.speak(u);
-  } catch(e) {}
+  unlockAudioContext();
   var overlay = document.getElementById('audio-unlock');
   if (overlay) overlay.style.display = 'none';
 }
