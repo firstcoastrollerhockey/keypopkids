@@ -233,39 +233,71 @@ var holdInterval = null;
 var synth = window.speechSynthesis;
 var volLevel = 0.9, muted = false;
 var cachedVoice = null;
+var audioUnlocked = false;
 
-// Voices load asynchronously in most browsers - cache the best one when ready
-function loadVoice() {
+// Chrome loads voices async - poll until they appear
+function pickVoice() {
   var vv = synth.getVoices();
-  if (vv.length === 0) return; // not ready yet
-  var preferred = ['samantha','karen','google us english','zira','daniel','victoria','alex'];
+  if (!vv || vv.length === 0) return false;
+  var preferred = [
+    'google us english', 'samantha', 'karen',
+    'microsoft zira', 'zira', 'daniel', 'victoria', 'alex'
+  ];
   for (var p = 0; p < preferred.length; p++) {
-    var match = vv.find(function(v) {
-      return v.name.toLowerCase().indexOf(preferred[p]) > -1;
-    });
-    if (match) { cachedVoice = match; return; }
+    for (var i = 0; i < vv.length; i++) {
+      if (vv[i].name.toLowerCase().indexOf(preferred[p]) > -1) {
+        cachedVoice = vv[i];
+        return true;
+      }
+    }
   }
-  // Fall back to any English voice
-  var eng = vv.find(function(v) { return v.lang && v.lang.indexOf('en') === 0; });
-  if (eng) cachedVoice = eng;
+  // fallback: first English voice
+  for (var i = 0; i < vv.length; i++) {
+    if (vv[i].lang && vv[i].lang.toLowerCase().indexOf('en') === 0) {
+      cachedVoice = vv[i];
+      return true;
+    }
+  }
+  cachedVoice = vv[0]; // last resort
+  return true;
 }
 
-// Load voices now, and again when the browser fires voiceschanged
-loadVoice();
-if (synth.onvoiceschanged !== undefined) {
-  synth.onvoiceschanged = loadVoice;
+// Poll every 100ms until voices are available (Chrome needs this)
+var voicePollInterval = setInterval(function() {
+  if (pickVoice()) clearInterval(voicePollInterval);
+}, 100);
+// Also hook the event for browsers that support it
+if (typeof synth.onvoiceschanged !== 'undefined') {
+  synth.onvoiceschanged = function() { pickVoice(); };
+}
+
+// Chrome requires a user-gesture before speech works.
+// We fire a silent utterance on the first button click to unlock it.
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  var u = new SpeechSynthesisUtterance('');
+  u.volume = 0;
+  synth.speak(u);
 }
 
 function speak(text) {
   if (muted || volLevel === 0) return;
   try {
-    // Chrome bug: synth stops working after ~15s of inactivity - resume it
+    // Chrome freezes synth after inactivity - always resume first
     if (synth.paused) synth.resume();
     synth.cancel();
-    var u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.85; u.pitch = 1.2; u.volume = volLevel;
-    if (cachedVoice) u.voice = cachedVoice;
-    synth.speak(u);
+    // Small delay after cancel so Chrome doesn't swallow the next utterance
+    setTimeout(function() {
+      try {
+        var u = new SpeechSynthesisUtterance(text);
+        u.rate = 0.85;
+        u.pitch = 1.2;
+        u.volume = volLevel;
+        if (cachedVoice) u.voice = cachedVoice;
+        synth.speak(u);
+      } catch(e) {}
+    }, 50);
   } catch(e) {}
 }
 
@@ -305,6 +337,7 @@ function updateVolUI() {
 
 // ---- Enter / Exit ----
 function enterPlayground() {
+  unlockAudio(); // must happen inside a user gesture (button click)
   document.getElementById('landing').style.display = 'none';
   var pg = document.getElementById('playground');
   pg.style.display = 'block';
@@ -313,7 +346,7 @@ function enterPlayground() {
   initBlobs();
   sessionStart = Date.now();
   timerInterval = setInterval(tickTimer, 1000);
-  synth.getVoices();
+  pickVoice();
 }
 
 function exitPlayground() {
