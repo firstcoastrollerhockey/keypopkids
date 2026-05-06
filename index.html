@@ -330,33 +330,52 @@ function updateStatsDisplay(){
 }
 
 // --- ART MODAL ---
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
 function buildArtImage(){
   var name=(document.getElementById('artist-name')||{value:''}).value.trim();
   var now=new Date(),dateStr=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   var fc=document.createElement('canvas');fc.width=artCanvas.width;fc.height=artCanvas.height;
   var ctx=fc.getContext('2d');
   ctx.fillStyle='#050410';ctx.fillRect(0,0,fc.width,fc.height);ctx.drawImage(artCanvas,0,0);
-  var W=fc.width,H=fc.height,el=Math.floor((Date.now()-sessionStart)/1000),m=Math.floor(el/60),s=el%60,ts=m+':'+(s<10?'0'+s:s);
-  var pw=420,ph=name?256:226,px=30,py=H-ph-30;
-  ctx.save();ctx.globalAlpha=.9;ctx.fillStyle='#0d0b1e';ctx.beginPath();ctx.roundRect(px,py,pw,ph,22);ctx.fill();
-  ctx.globalAlpha=1;ctx.strokeStyle='#ffffff22';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(px,py,pw,ph,22);ctx.stroke();
+  var W=fc.width,H=fc.height;
+  var elapsed=sessionStart?Math.floor((Date.now()-sessionStart)/1000):0;
+  var m=Math.floor(elapsed/60),s=elapsed%60,ts=m+':'+(s<10?'0'+s:s);
+  var pw=440,ph=name?258:228,px=30,py=H-ph-30;
+  ctx.save();ctx.globalAlpha=.92;ctx.fillStyle='#0d0b1e';
+  roundRect(ctx,px,py,pw,ph,22);ctx.fill();
+  ctx.globalAlpha=1;ctx.strokeStyle='#ffffff22';ctx.lineWidth=2;
+  roundRect(ctx,px,py,pw,ph,22);ctx.stroke();
   var ly=py+44;
   if(name){
-    ctx.font='bold 27px sans-serif';ctx.fillStyle='#ff6bdf';ctx.fillText('\uD83C\uDFA8 '+name+'\u2019s Masterpiece',px+22,ly);ly+=28;
-    ctx.font='13px sans-serif';ctx.fillStyle='#ffffff50';ctx.fillText('Key Pop Kids! Keyboard Adventure',px+22,ly);ly+=26;
+    ctx.font='bold 26px sans-serif';ctx.fillStyle='#ff6bdf';
+    ctx.fillText(name+"'s Masterpiece",px+22,ly);ly+=28;
+    ctx.font='13px sans-serif';ctx.fillStyle='#ffffff50';
+    ctx.fillText('Key Pop Kids! Keyboard Adventure',px+22,ly);ly+=26;
   } else {
-    ctx.font='bold 23px sans-serif';ctx.fillStyle='#ffe66b';ctx.fillText('\uD83C\uDF89 My Key Pop Kids! Masterpiece',px+22,ly);ly+=36;
+    ctx.font='bold 22px sans-serif';ctx.fillStyle='#ffe66b';
+    ctx.fillText('My Key Pop Kids! Masterpiece',px+22,ly);ly+=36;
   }
-  ctx.strokeStyle='#ffffff18';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px+22,ly);ctx.lineTo(px+pw-22,ly);ctx.stroke();ly+=22;
+  ctx.strokeStyle='#ffffff18';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(px+22,ly);ctx.lineTo(px+pw-22,ly);ctx.stroke();ly+=22;
   ctx.font='15px sans-serif';ctx.fillStyle='#ffffffcc';
-  ctx.fillText('\u2328\uFE0F  Keys Pressed: '+stats.keys,px+22,ly);ly+=26;
-  ctx.fillText('\uD83D\uDD24  Letters: '+stats.letters+'     \uD83D\uDD22  Numbers: '+stats.numbers,px+22,ly);ly+=26;
-  ctx.fillText('\u2728  Emojis Triggered: '+stats.emojis,px+22,ly);ly+=26;
-  ctx.fillText('\u23F1\uFE0F  Session Time: '+ts,px+22,ly);ly+=26;
-  ctx.font='bold 14px sans-serif';ctx.fillStyle='#ffe66b';ctx.fillText('\uD83D\uDCC5  '+dateStr,px+22,ly);ly+=22;
-  ctx.font='11px sans-serif';ctx.fillStyle='#ffffff30';ctx.fillText('keypopkids.com \u2014 The Magical Keyboard Adventure',px+22,ly);
+  ctx.fillText('Keys Pressed: '+stats.keys,px+22,ly);ly+=26;
+  ctx.fillText('Letters: '+stats.letters+'     Numbers: '+stats.numbers,px+22,ly);ly+=26;
+  ctx.fillText('Emojis Triggered: '+stats.emojis,px+22,ly);ly+=26;
+  ctx.fillText('Session Time: '+ts,px+22,ly);ly+=26;
+  ctx.font='bold 14px sans-serif';ctx.fillStyle='#ffe66b';
+  ctx.fillText('Date: '+dateStr,px+22,ly);ly+=22;
+  ctx.font='11px sans-serif';ctx.fillStyle='#ffffff30';
+  ctx.fillText('keypopkids.com  |  The Magical Keyboard Adventure',px+22,ly);
   ctx.restore();
-  ctx.save();ctx.font='bold 64px sans-serif';ctx.globalAlpha=.05;ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.fillText('Key Pop Kids!',W/2,H/2+26);ctx.restore();
+  ctx.save();ctx.font='bold 64px sans-serif';ctx.globalAlpha=.05;
+  ctx.fillStyle='#ffffff';ctx.textAlign='center';
+  ctx.fillText('Key Pop Kids!',W/2,H/2+26);ctx.restore();
   return fc.toDataURL('image/png');
 }
 
