@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KeyPop! - The Magical Keyboard Adventure</title>
+<title>Key Pop Kids! - The Magical Keyboard Adventure</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
   :root{--bg:#0d0b1e;--card:#1a1535;--accent1:#ff6bdf;--accent2:#6bffde;--accent3:#ffe66b;--accent4:#6b9fff;--ad-bg:#12102a}
@@ -84,7 +84,7 @@
   </div>
   <div class="hero">
     <div class="floating-letters" id="floatingLetters"></div>
-    <div class="logo">KeyPop! &#127881;</div>
+    <div class="logo">Key Pop Kids! &#127881;</div>
     <div class="tagline">The Magical Keyboard Adventure</div>
     <div class="sub-tagline">Press keys, make art, hear letters, and create a one-of-a-kind keepsake &mdash; perfect for little explorers!</div>
     <button class="enter-btn" onclick="enterPlayground()">&#128640; Start Playing &mdash; Full Screen!</button>
@@ -343,9 +343,9 @@ function buildArtImage(){
   var ly=py+44;
   if(name){
     ctx.font='bold 27px sans-serif';ctx.fillStyle='#ff6bdf';ctx.fillText('\uD83C\uDFA8 '+name+'\u2019s Masterpiece',px+22,ly);ly+=28;
-    ctx.font='13px sans-serif';ctx.fillStyle='#ffffff50';ctx.fillText('KeyPop! Keyboard Adventure',px+22,ly);ly+=26;
+    ctx.font='13px sans-serif';ctx.fillStyle='#ffffff50';ctx.fillText('Key Pop Kids! Keyboard Adventure',px+22,ly);ly+=26;
   } else {
-    ctx.font='bold 23px sans-serif';ctx.fillStyle='#ffe66b';ctx.fillText('\uD83C\uDF89 My KeyPop! Masterpiece',px+22,ly);ly+=36;
+    ctx.font='bold 23px sans-serif';ctx.fillStyle='#ffe66b';ctx.fillText('\uD83C\uDF89 My Key Pop Kids! Masterpiece',px+22,ly);ly+=36;
   }
   ctx.strokeStyle='#ffffff18';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px+22,ly);ctx.lineTo(px+pw-22,ly);ctx.stroke();ly+=22;
   ctx.font='15px sans-serif';ctx.fillStyle='#ffffffcc';
@@ -354,9 +354,9 @@ function buildArtImage(){
   ctx.fillText('\u2728  Emojis Triggered: '+stats.emojis,px+22,ly);ly+=26;
   ctx.fillText('\u23F1\uFE0F  Session Time: '+ts,px+22,ly);ly+=26;
   ctx.font='bold 14px sans-serif';ctx.fillStyle='#ffe66b';ctx.fillText('\uD83D\uDCC5  '+dateStr,px+22,ly);ly+=22;
-  ctx.font='11px sans-serif';ctx.fillStyle='#ffffff30';ctx.fillText('keypop.app \u2014 The Magical Keyboard Adventure',px+22,ly);
+  ctx.font='11px sans-serif';ctx.fillStyle='#ffffff30';ctx.fillText('keypopkids.com \u2014 The Magical Keyboard Adventure',px+22,ly);
   ctx.restore();
-  ctx.save();ctx.font='bold 64px sans-serif';ctx.globalAlpha=.05;ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.fillText('KeyPop!',W/2,H/2+26);ctx.restore();
+  ctx.save();ctx.font='bold 64px sans-serif';ctx.globalAlpha=.05;ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.fillText('Key Pop Kids!',W/2,H/2+26);ctx.restore();
   return fc.toDataURL('image/png');
 }
 
@@ -371,7 +371,7 @@ function closeArtModal(){document.getElementById('art-modal').classList.remove('
 function downloadArt(){
   var name=document.getElementById('artist-name').value.trim();
   var safe=name?name.replace(/[^a-z0-9]/gi,'-').toLowerCase()+'-':'';
-  var a=document.createElement('a');a.download='keypop-'+safe+'masterpiece.png';a.href=document.getElementById('art-preview-img').src;a.click();
+  var a=document.createElement('a');a.download='keypopkids-'+safe+'masterpiece.png';a.href=document.getElementById('art-preview-img').src;a.click();
 }
 
 document.getElementById('art-modal').addEventListener('click',function(e){if(e.target===this)closeArtModal();});
