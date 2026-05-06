@@ -3,398 +3,611 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Key Pop Kids! - The Magical Keyboard Adventure</title>
+<title>KeyPopKids! - The Magical Keyboard Adventure</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
-  :root{--bg:#0d0b1e;--card:#1a1535;--accent1:#ff6bdf;--accent2:#6bffde;--accent3:#ffe66b;--accent4:#6b9fff;--ad-bg:#12102a}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
-  #landing{min-height:100vh;display:flex;flex-direction:column}
-  .ad-banner{background:var(--ad-bg);border-bottom:2px solid #ffffff15;display:flex;align-items:center;justify-content:center;padding:12px 24px;min-height:90px;position:relative}
-  .ad-banner .ad-label{position:absolute;top:6px;left:12px;font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.1em}
-  .ad-placeholder{width:728px;max-width:100%;height:60px;border:2px dashed #ffffff20;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#444;font-size:13px}
-  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
-  .hero::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,#6b9fff22 0%,transparent 70%);top:-200px;right:-200px;border-radius:50%;animation:pulse 4s ease-in-out infinite}
-  .hero::after{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,#ff6bdf22 0%,transparent 70%);bottom:-200px;left:-150px;border-radius:50%;animation:pulse 5s ease-in-out infinite reverse}
-  @keyframes pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
-  .floating-letters{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-  .fl{position:absolute;font-family:'Fredoka One',cursive;opacity:.07;animation:floatUp linear infinite;user-select:none}
-  @keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.07}90%{opacity:.07}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
-  .logo{font-family:'Fredoka One',cursive;font-size:clamp(60px,12vw,110px);line-height:1;background:linear-gradient(135deg,var(--accent1),var(--accent3),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;position:relative;z-index:1;filter:drop-shadow(0 0 40px #ff6bdf55);animation:logoWobble 3s ease-in-out infinite}
-  @keyframes logoWobble{0%,100%{transform:rotate(-1deg) scale(1)}50%{transform:rotate(1deg) scale(1.02)}}
-  .tagline{font-size:clamp(18px,3vw,28px);font-weight:700;color:#ffffffcc;margin-bottom:8px;position:relative;z-index:1}
-  .sub-tagline{font-size:clamp(14px,2vw,18px);color:#ffffff66;margin-bottom:50px;position:relative;z-index:1;max-width:500px}
-  .enter-btn{position:relative;z-index:1;background:linear-gradient(135deg,var(--accent1),var(--accent4));border:none;color:white;font-family:'Fredoka One',cursive;font-size:clamp(22px,4vw,32px);padding:20px 60px;border-radius:999px;cursor:pointer;box-shadow:0 0 60px #ff6bdf66,0 4px 30px #00000055;transition:transform .2s;animation:btnPulse 2s ease-in-out infinite}
-  @keyframes btnPulse{0%,100%{box-shadow:0 0 60px #ff6bdf66,0 4px 30px #00000055}50%{box-shadow:0 0 90px #ff6bdfaa,0 4px 40px #00000055}}
-  .enter-btn:hover{transform:scale(1.06)}.enter-btn:active{transform:scale(.97)}
-  .features{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:60px;position:relative;z-index:1;max-width:800px}
-  .feature-card{background:var(--card);border:1px solid #ffffff12;border-radius:20px;padding:20px 24px;width:220px;text-align:center}
-  .feature-card .icon{font-size:36px;margin-bottom:10px}
-  .feature-card h3{font-family:'Fredoka One',cursive;font-size:18px;color:var(--accent2);margin-bottom:6px}
-  .feature-card p{font-size:13px;color:#ffffff88;line-height:1.5}
-  .ad-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px;background:var(--ad-bg);border-top:2px solid #ffffff10;flex-wrap:wrap}
-  .ad-box-sm{width:300px;height:60px;border:2px dashed #ffffff18;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#444;font-size:12px}
-  /* PLAYGROUND */
-  #playground{display:none;position:fixed;inset:0;background:#050410;overflow:hidden;z-index:1000}
-  .bg-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.3;animation:blobMove linear infinite;pointer-events:none}
-  @keyframes blobMove{0%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-60px) scale(1.1)}50%{transform:translate(-40px,100px) scale(.9)}75%{transform:translate(100px,40px) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
-  .key-pop{position:absolute;font-family:'Fredoka One',cursive;pointer-events:none;user-select:none;white-space:nowrap;animation:keyPopAnim ease-out forwards;z-index:10}
-  @keyframes keyPopAnim{0%{opacity:0;transform:scale(.3) translateY(30px)}15%{opacity:1;transform:scale(1.2) translateY(-10px)}30%{opacity:1;transform:scale(1) translateY(0)}70%{opacity:.9}100%{opacity:0;transform:scale(.7) translateY(-40px)}}
-  .emoji-pop{position:absolute;font-size:80px;pointer-events:none;user-select:none;animation:emojiPopAnim ease-out forwards;z-index:10}
-  @keyframes emojiPopAnim{0%{opacity:0;transform:scale(.2) rotate(-15deg)}20%{opacity:1;transform:scale(1.3) rotate(10deg)}40%{opacity:1;transform:scale(1) rotate(-5deg)}80%{opacity:.8}100%{opacity:0;transform:scale(.5) rotate(20deg) translateY(-60px)}}
-  #art-canvas{position:absolute;inset:0;pointer-events:none;z-index:2}
-  #hud{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:16px;align-items:center;z-index:20;background:#ffffff10;backdrop-filter:blur(10px);border:1px solid #ffffff20;border-radius:999px;padding:8px 20px;font-family:'Fredoka One',cursive;font-size:16px}
-  .hud-stat{color:var(--accent2)}.hud-label{color:#ffffff66;font-size:12px;font-family:'Nunito',sans-serif}
-  #controls{position:absolute;bottom:20px;right:20px;display:flex;gap:12px;z-index:20}
-  .ctrl-btn{background:#ffffff18;backdrop-filter:blur(10px);border:1px solid #ffffff25;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 22px;border-radius:999px;cursor:pointer;transition:background .2s,transform .2s}
-  .ctrl-btn:hover{background:#ffffff30;transform:scale(1.05)}.ctrl-btn.primary{background:linear-gradient(135deg,var(--accent1),var(--accent4));border:none}
-  /* VOLUME */
-  #vol-control{position:absolute;bottom:20px;left:20px;display:flex;align-items:center;gap:10px;z-index:20;background:#ffffff10;backdrop-filter:blur(10px);border:1px solid #ffffff20;border-radius:999px;padding:8px 18px}
-  #vol-icon{font-size:20px;cursor:pointer;user-select:none;transition:transform .15s;line-height:1}
-  #vol-icon:hover{transform:scale(1.2)}
-  #vol-slider{-webkit-appearance:none;appearance:none;width:110px;height:6px;border-radius:999px;background:linear-gradient(to right,var(--accent2) 0%,var(--accent2) 90%,#ffffff30 90%);outline:none;cursor:pointer}
-  #vol-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent2);cursor:pointer;box-shadow:0 0 8px #6bffde88;transition:transform .15s}
-  #vol-slider::-webkit-slider-thumb:hover{transform:scale(1.25)}
-  #vol-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;border:none;background:var(--accent2);cursor:pointer}
-  #vol-label{font-family:'Fredoka One',cursive;font-size:14px;color:var(--accent2);min-width:34px;text-align:right}
-  /* HINT */
-  #kbd-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:'Fredoka One',cursive;font-size:clamp(24px,5vw,48px);color:#ffffff18;pointer-events:none;z-index:5;transition:opacity 1s}
-  #kbd-hint.hidden{opacity:0}
-  /* MODAL */
-  #art-modal{display:none;position:fixed;inset:0;background:#000000cc;z-index:2000;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:20px}
-  #art-modal.open{display:flex}
-  .modal-name-row{display:flex;flex-direction:column;align-items:center;gap:8px}
-  .modal-name-label{font-family:'Fredoka One',cursive;font-size:20px;color:#ffffffcc}
-  .modal-name-input{font-family:'Fredoka One',cursive;font-size:22px;padding:10px 28px;border-radius:999px;border:2px solid #ffffff30;background:#ffffff14;color:white;text-align:center;outline:none;width:300px;transition:border-color .2s,background .2s}
-  .modal-name-input::placeholder{color:#ffffff44}
-  .modal-name-input:focus{border-color:var(--accent2);background:#ffffff22}
-  #art-preview-container{max-width:90vw;max-height:62vh;border-radius:20px;overflow:hidden;box-shadow:0 0 80px #ff6bdf55;border:2px solid #ffffff30}
-  #art-preview-img{display:block;max-width:100%;max-height:62vh}
-  .modal-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
-  .modal-btn{font-family:'Fredoka One',cursive;font-size:18px;padding:12px 36px;border-radius:999px;border:none;cursor:pointer;transition:transform .2s}
-  .modal-btn:hover{transform:scale(1.05)}.modal-btn.download{background:linear-gradient(135deg,var(--accent2),var(--accent4));color:#0d0b1e}.modal-btn.close-modal{background:#ffffff22;color:white}
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+
+:root {
+  --bg: #0d0b1e;
+  --card: #1a1535;
+  --c1: #ff6bdf;
+  --c2: #6bffde;
+  --c3: #ffe66b;
+  --c4: #6b9fff;
+  --ad: #12102a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; overflow-x: hidden; }
+
+/* ---- LANDING ---- */
+#landing { min-height: 100vh; display: flex; flex-direction: column; }
+
+.ad-banner { background: var(--ad); border-bottom: 2px solid #ffffff15; display: flex; align-items: center; justify-content: center; padding: 12px 24px; min-height: 90px; position: relative; }
+.ad-label { position: absolute; top: 6px; left: 12px; font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: .1em; }
+.ad-placeholder { width: 728px; max-width: 100%; height: 60px; border: 2px dashed #ffffff20; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 13px; }
+
+.hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, #6b9fff22, transparent 70%); top: -200px; right: -200px; border-radius: 50%; animation: pulse 4s ease-in-out infinite; }
+.hero::after  { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, #ff6bdf22, transparent 70%); bottom: -200px; left: -150px; border-radius: 50%; animation: pulse 5s ease-in-out infinite reverse; }
+@keyframes pulse { 0%,100% { transform: scale(1); opacity: .6; } 50% { transform: scale(1.15); opacity: 1; } }
+
+.fl-wrap { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.fl { position: absolute; font-family: 'Fredoka One', cursive; opacity: .07; animation: floatUp linear infinite; user-select: none; }
+@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); opacity: 0; } 10% { opacity: .07; } 90% { opacity: .07; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
+
+.logo { font-family: 'Fredoka One', cursive; font-size: clamp(52px, 10vw, 100px); line-height: 1; background: linear-gradient(135deg, var(--c1), var(--c3), var(--c2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; position: relative; z-index: 1; filter: drop-shadow(0 0 40px #ff6bdf55); animation: wobble 3s ease-in-out infinite; }
+@keyframes wobble { 0%,100% { transform: rotate(-1deg) scale(1); } 50% { transform: rotate(1deg) scale(1.02); } }
+
+.tagline { font-size: clamp(16px, 3vw, 26px); font-weight: 700; color: #ffffffcc; margin-bottom: 8px; position: relative; z-index: 1; }
+.sub { font-size: clamp(13px, 2vw, 17px); color: #ffffff66; margin-bottom: 48px; position: relative; z-index: 1; max-width: 480px; }
+
+.enter-btn { position: relative; z-index: 1; background: linear-gradient(135deg, var(--c1), var(--c4)); border: none; color: #fff; font-family: 'Fredoka One', cursive; font-size: clamp(20px, 4vw, 30px); padding: 18px 56px; border-radius: 999px; cursor: pointer; box-shadow: 0 0 60px #ff6bdf66, 0 4px 30px #00000055; transition: transform .2s; animation: btnpulse 2s ease-in-out infinite; }
+@keyframes btnpulse { 0%,100% { box-shadow: 0 0 60px #ff6bdf66, 0 4px 30px #00000055; } 50% { box-shadow: 0 0 90px #ff6bdfaa, 0 4px 40px #00000055; } }
+.enter-btn:hover { transform: scale(1.06); }
+.enter-btn:active { transform: scale(.97); }
+
+.features { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; margin-top: 56px; position: relative; z-index: 1; max-width: 800px; }
+.fc { background: var(--card); border: 1px solid #ffffff12; border-radius: 20px; padding: 20px; width: 210px; text-align: center; }
+.fc .ic { font-size: 34px; margin-bottom: 8px; }
+.fc h3 { font-family: 'Fredoka One', cursive; font-size: 17px; color: var(--c2); margin-bottom: 5px; }
+.fc p { font-size: 12px; color: #ffffff88; line-height: 1.5; }
+
+.ad-row { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px; background: var(--ad); border-top: 2px solid #ffffff10; flex-wrap: wrap; }
+.ad-sm { width: 300px; height: 60px; border: 2px dashed #ffffff18; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 12px; }
+
+/* ---- PLAYGROUND ---- */
+#playground {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #050410;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .3; animation: blobmove linear infinite; pointer-events: none; }
+@keyframes blobmove { 0% { transform: translate(0,0) scale(1); } 25% { transform: translate(80px,-60px) scale(1.1); } 50% { transform: translate(-40px,100px) scale(.9); } 75% { transform: translate(100px,40px) scale(1.05); } 100% { transform: translate(0,0) scale(1); } }
+
+.kpop { position: absolute; font-family: 'Fredoka One', cursive; pointer-events: none; user-select: none; white-space: nowrap; animation: kpopanim ease-out forwards; z-index: 10; }
+@keyframes kpopanim { 0% { opacity: 0; transform: scale(.3) translateY(30px); } 15% { opacity: 1; transform: scale(1.2) translateY(-10px); } 30% { opacity: 1; transform: scale(1) translateY(0); } 70% { opacity: .9; } 100% { opacity: 0; transform: scale(.7) translateY(-40px); } }
+
+.epop { position: absolute; font-size: 80px; pointer-events: none; user-select: none; animation: epopanim ease-out forwards; z-index: 10; }
+@keyframes epopanim { 0% { opacity: 0; transform: scale(.2) rotate(-15deg); } 20% { opacity: 1; transform: scale(1.3) rotate(10deg); } 40% { opacity: 1; transform: scale(1) rotate(-5deg); } 80% { opacity: .8; } 100% { opacity: 0; transform: scale(.5) rotate(20deg) translateY(-60px); } }
+
+#art-canvas { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+
+#hud { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; align-items: center; z-index: 20; background: #ffffff10; backdrop-filter: blur(10px); border: 1px solid #ffffff20; border-radius: 999px; padding: 8px 20px; font-family: 'Fredoka One', cursive; font-size: 15px; white-space: nowrap; }
+.hs { color: var(--c2); }
+.hl { color: #ffffff66; font-size: 11px; font-family: 'Nunito', sans-serif; }
+
+#controls { position: absolute; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 20; }
+.cbtn { background: #ffffff18; backdrop-filter: blur(10px); border: 1px solid #ffffff25; color: #fff; font-family: 'Fredoka One', cursive; font-size: 14px; padding: 10px 20px; border-radius: 999px; cursor: pointer; transition: background .2s, transform .2s; }
+.cbtn:hover { background: #ffffff30; transform: scale(1.05); }
+.cbtn.pri { background: linear-gradient(135deg, var(--c1), var(--c4)); border: none; }
+
+#vol-wrap { position: absolute; bottom: 20px; left: 20px; display: flex; align-items: center; gap: 10px; z-index: 20; background: #ffffff10; backdrop-filter: blur(10px); border: 1px solid #ffffff20; border-radius: 999px; padding: 8px 16px; }
+#vol-icon { font-size: 20px; cursor: pointer; user-select: none; line-height: 1; transition: transform .15s; }
+#vol-icon:hover { transform: scale(1.2); }
+#vol-slider { -webkit-appearance: none; appearance: none; width: 100px; height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--c2) 90%, #ffffff30 90%); outline: none; cursor: pointer; }
+#vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--c2); cursor: pointer; box-shadow: 0 0 8px #6bffde88; }
+#vol-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; border: none; background: var(--c2); cursor: pointer; }
+#vol-label { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--c2); min-width: 32px; text-align: right; }
+
+#hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; font-family: 'Fredoka One', cursive; font-size: clamp(22px, 5vw, 44px); color: #ffffff18; pointer-events: none; z-index: 5; transition: opacity 1s; }
+#hint.gone { opacity: 0; }
+
+/* ---- MODAL (INSIDE PLAYGROUND) ---- */
+#art-modal {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 500;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+}
+#art-modal.open { display: flex; }
+
+.mname-row { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.mname-label { font-family: 'Fredoka One', cursive; font-size: 20px; color: #ffffffcc; }
+.mname-input { font-family: 'Fredoka One', cursive; font-size: 22px; padding: 10px 28px; border-radius: 999px; border: 2px solid #ffffff30; background: #ffffff14; color: #fff; text-align: center; outline: none; width: 300px; transition: border-color .2s, background .2s; }
+.mname-input::placeholder { color: #ffffff44; }
+.mname-input:focus { border-color: var(--c2); background: #ffffff22; }
+
+#preview-wrap { max-width: 88vw; max-height: 58vh; border-radius: 18px; overflow: hidden; box-shadow: 0 0 80px #ff6bdf55; border: 2px solid #ffffff30; }
+#preview-img { display: block; max-width: 100%; max-height: 58vh; }
+
+.mbtns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.mbtn { font-family: 'Fredoka One', cursive; font-size: 17px; padding: 12px 32px; border-radius: 999px; border: none; cursor: pointer; transition: transform .2s; }
+.mbtn:hover { transform: scale(1.05); }
+.mbtn.dl { background: linear-gradient(135deg, var(--c2), var(--c4)); color: #0d0b1e; }
+.mbtn.cl { background: #ffffff22; color: #fff; }
 </style>
 </head>
 <body>
 
+<!-- LANDING -->
 <div id="landing">
   <div class="ad-banner">
     <span class="ad-label">Advertisement</span>
-    <div class="ad-placeholder">&#128226; Your 728x90 Leaderboard Ad Goes Here</div>
+    <div class="ad-placeholder">Your 728x90 Leaderboard Ad Goes Here</div>
   </div>
   <div class="hero">
-    <div class="floating-letters" id="floatingLetters"></div>
-    <div class="logo">Key Pop Kids! &#127881;</div>
+    <div class="fl-wrap" id="flwrap"></div>
+    <div class="logo">KeyPopKids!</div>
     <div class="tagline">The Magical Keyboard Adventure</div>
-    <div class="sub-tagline">Press keys, make art, hear letters, and create a one-of-a-kind keepsake &mdash; perfect for little explorers!</div>
-    <button class="enter-btn" onclick="enterPlayground()">&#128640; Start Playing &mdash; Full Screen!</button>
+    <div class="sub">Press keys, make art, hear letters, and create a one-of-a-kind keepsake &mdash; perfect for little explorers!</div>
+    <button class="enter-btn" onclick="enterPlayground()">Start Playing &mdash; Full Screen!</button>
     <div class="features">
-      <div class="feature-card"><div class="icon">&#127912;</div><h3>Generative Art</h3><p>Every key you press paints a unique masterpiece &mdash; no two sessions are the same!</p></div>
-      <div class="feature-card"><div class="icon">&#128266;</div><h3>Letter Sounds</h3><p>Hear each letter and number spoken aloud so kids learn as they play!</p></div>
-      <div class="feature-card"><div class="icon">&#127752;</div><h3>Rainbow Letters</h3><p>Watch colorful letters explode onto the screen every time you type!</p></div>
-      <div class="feature-card"><div class="icon">&#128190;</div><h3>Keep Your Art</h3><p>Download your masterpiece with your name, the date, and your session stats!</p></div>
+      <div class="fc"><div class="ic">&#127912;</div><h3>Generative Art</h3><p>Every key paints a unique masterpiece &mdash; no two sessions are the same!</p></div>
+      <div class="fc"><div class="ic">&#128266;</div><h3>Letter Sounds</h3><p>Hear each letter spoken aloud so kids learn as they play!</p></div>
+      <div class="fc"><div class="ic">&#127752;</div><h3>Rainbow Letters</h3><p>Colorful letters explode onto the screen every time you type!</p></div>
+      <div class="fc"><div class="ic">&#128190;</div><h3>Keep Your Art</h3><p>Download your masterpiece with your name, date, and session stats!</p></div>
     </div>
   </div>
   <div class="ad-row">
-    <div class="ad-box-sm">&#128226; 300x60 Ad Unit</div>
-    <div class="ad-box-sm">&#128226; 300x60 Ad Unit</div>
+    <div class="ad-sm">300x60 Ad Unit</div>
+    <div class="ad-sm">300x60 Ad Unit</div>
   </div>
 </div>
 
+<!-- PLAYGROUND -->
 <div id="playground">
   <canvas id="art-canvas"></canvas>
-  <div id="kbd-hint">&#9000; Press any key to begin your adventure!</div>
+  <div id="hint">Press any key to begin your adventure!</div>
+
   <div id="hud">
-    <div><div class="hud-label">Keys Pressed</div><div class="hud-stat" id="stat-keys">0</div></div>
+    <div><div class="hl">Keys</div><div class="hs" id="s-keys">0</div></div>
     <div>&middot;</div>
-    <div><div class="hud-label">Letters</div><div class="hud-stat" id="stat-letters">0</div></div>
+    <div><div class="hl">Letters</div><div class="hs" id="s-letters">0</div></div>
     <div>&middot;</div>
-    <div><div class="hud-label">Numbers</div><div class="hud-stat" id="stat-numbers">0</div></div>
+    <div><div class="hl">Numbers</div><div class="hs" id="s-numbers">0</div></div>
     <div>&middot;</div>
-    <div><div class="hud-label">Emojis</div><div class="hud-stat" id="stat-emojis">0</div></div>
+    <div><div class="hl">Emojis</div><div class="hs" id="s-emojis">0</div></div>
     <div>&middot;</div>
-    <div><div class="hud-label">Time</div><div class="hud-stat" id="stat-time">0:00</div></div>
+    <div><div class="hl">Time</div><div class="hs" id="s-time">0:00</div></div>
   </div>
+
   <div id="controls">
-    <button class="ctrl-btn" onclick="exitPlayground()">&#127968; Home</button>
-    <button class="ctrl-btn primary" onclick="openArtModal()">&#128444; See My Art!</button>
+    <button class="cbtn" onclick="exitPlayground()">Home</button>
+    <button class="cbtn pri" onclick="openModal()">See My Art!</button>
   </div>
-  <div id="vol-control">
-    <span id="vol-icon" onclick="toggleMute()" title="Mute / Unmute">&#128266;</span>
-    <input id="vol-slider" type="range" min="0" max="100" value="90" oninput="setVolume(this.value)" aria-label="Volume">
+
+  <div id="vol-wrap">
+    <span id="vol-icon" onclick="toggleMute()">&#128266;</span>
+    <input id="vol-slider" type="range" min="0" max="100" value="90" oninput="setVolume(this.value)">
     <span id="vol-label">90%</span>
   </div>
-</div>
 
-<div id="art-modal">
-  <div class="modal-name-row">
-    <label class="modal-name-label" for="artist-name">&#9999; What's your name, artist?</label>
-    <input id="artist-name" class="modal-name-input" type="text" maxlength="30" placeholder="Type your name..." oninput="refreshArtPreview()">
-  </div>
-  <div id="art-preview-container">
-    <img id="art-preview-img" src="" alt="Your Masterpiece">
-  </div>
-  <div class="modal-btns">
-    <button class="modal-btn download" onclick="downloadArt()">&#11015; Download Masterpiece!</button>
-    <button class="modal-btn close-modal" onclick="closeArtModal()">Keep Playing!</button>
+  <!-- ART MODAL lives INSIDE playground so it appears above fullscreen -->
+  <div id="art-modal">
+    <div class="mname-row">
+      <label class="mname-label" for="artist-name">What's your name, artist?</label>
+      <input id="artist-name" class="mname-input" type="text" maxlength="30" placeholder="Type your name..." oninput="refreshPreview()">
+    </div>
+    <div id="preview-wrap">
+      <img id="preview-img" src="" alt="Your Masterpiece">
+    </div>
+    <div class="mbtns">
+      <button class="mbtn dl" onclick="downloadArt()">Download Masterpiece!</button>
+      <button class="mbtn cl" onclick="closeModal()">Keep Playing!</button>
+    </div>
   </div>
 </div>
 
 <script>
-// Floating letters on landing
-(function(){
-  var c=document.getElementById('floatingLetters'),ch='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',cl=['#ff6bdf','#6bffde','#ffe66b','#6b9fff','#ff9f6b','#b06bff'];
-  for(var i=0;i<40;i++){var e=document.createElement('div');e.className='fl';e.textContent=ch[Math.floor(Math.random()*ch.length)];e.style.left=Math.random()*100+'%';e.style.fontSize=(30+Math.random()*80)+'px';e.style.color=cl[Math.floor(Math.random()*cl.length)];e.style.animationDuration=(8+Math.random()*18)+'s';e.style.animationDelay=(-Math.random()*20)+'s';c.appendChild(e);}
+// ---- Floating letters on landing ----
+(function() {
+  var wrap = document.getElementById('flwrap');
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var cols  = ['#ff6bdf','#6bffde','#ffe66b','#6b9fff','#ff9f6b','#b06bff'];
+  for (var i = 0; i < 40; i++) {
+    var el = document.createElement('div');
+    el.className = 'fl';
+    el.textContent = chars[Math.floor(Math.random() * chars.length)];
+    el.style.left = (Math.random() * 100) + '%';
+    el.style.fontSize = (30 + Math.random() * 80) + 'px';
+    el.style.color = cols[Math.floor(Math.random() * cols.length)];
+    el.style.animationDuration = (8 + Math.random() * 18) + 's';
+    el.style.animationDelay = (-Math.random() * 20) + 's';
+    wrap.appendChild(el);
+  }
 })();
 
-var COLORS=['#ff6bdf','#6bffde','#ffe66b','#6b9fff','#ff9f6b','#b06bff','#ff6b6b','#6bffa6','#fff06b','#6be0ff','#ff8e53','#53ffd4','#f553ff','#53a8ff','#ffdd53'];
-var EMOJIS=['&#127775;','&#127881;','&#129412;','&#127752;','&#127880;','&#127882;','&#129419;','&#127802;','&#127853;','&#127928;','&#128640;','&#11088;','&#128171;','&#127919;','&#129418;','&#128000;','&#127800;','&#127829;','&#127918;','&#127942;','&#127803;','&#129409;','&#128025;','&#128165;','&#10024;','&#127914;'];
+// ---- Constants ----
+var COLORS = ['#ff6bdf','#6bffde','#ffe66b','#6b9fff','#ff9f6b','#b06bff','#ff6b6b','#6bffa6','#fff06b','#6be0ff','#ff8e53','#53ffd4','#f553ff','#53a8ff','#ffdd53'];
+var EMOJIS = ['\uD83C\uDF1F','\uD83C\uDF89','\uD83E\uDD84','\uD83C\uDF08','\uD83C\uDF88','\uD83E\uDD8B','\uD83C\uDF3A','\uD83C\uDF6D','\uD83C\uDFB8','\uD83D\uDE80','\u2B50','\uD83D\uDCAB','\uD83C\uDFAF','\uD83E\uDD8A','\uD83D\uDC2C','\uD83C\uDF38','\uD83C\uDFC6','\uD83C\uDF3B','\uD83E\uDD81','\uD83D\uDC99','\uD83D\uDCA5','\u2728','\uD83C\uDFAA'];
 
-var stats={keys:0,letters:0,numbers:0,emojis:0};
-var sessionStart=null,timerInterval=null,consecutiveCount=0,hintHidden=false;
-var artCanvas,artCtx,artHistory=[],holdInterval=null;
+// ---- State ----
+var stats = { keys:0, letters:0, numbers:0, emojis:0 };
+var sessionStart = null, timerInterval = null;
+var consecutiveCount = 0, hintGone = false;
+var artCanvas = null, artCtx = null, artHistory = [];
+var holdInterval = null;
 
-// --- SPEECH + VOLUME ---
-var synth=window.speechSynthesis;
-var volumeLevel=0.9,isMuted=false;
+// ---- Speech + Volume ----
+var synth = window.speechSynthesis;
+var volLevel = 0.9, muted = false;
 
-function speak(text){
-  if(isMuted||volumeLevel===0)return;
-  try{
+function speak(text) {
+  if (muted || volLevel === 0) return;
+  try {
     synth.cancel();
-    var u=new SpeechSynthesisUtterance(text);
-    u.rate=0.85;u.pitch=1.2;u.volume=volumeLevel;
-    var vs=synth.getVoices(),pv=vs.find(function(v){return v.name.toLowerCase().indexOf('samantha')>-1||v.name.toLowerCase().indexOf('karen')>-1||v.name.toLowerCase().indexOf('daniel')>-1;});
-    if(pv)u.voice=pv;
+    var u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.85; u.pitch = 1.2; u.volume = volLevel;
+    var vv = synth.getVoices();
+    var pv = vv.find(function(v) {
+      return v.name.toLowerCase().indexOf('samantha') > -1 ||
+             v.name.toLowerCase().indexOf('karen') > -1 ||
+             v.name.toLowerCase().indexOf('daniel') > -1;
+    });
+    if (pv) u.voice = pv;
     synth.speak(u);
-  }catch(e){}
+  } catch(e) {}
 }
 
-function setVolume(val){
-  volumeLevel=parseInt(val)/100;
-  if(isMuted&&volumeLevel>0)isMuted=false;
-  if(volumeLevel===0)isMuted=true;
+function setVolume(val) {
+  volLevel = parseInt(val) / 100;
+  muted = volLevel === 0;
   updateVolUI();
 }
 
-function toggleMute(){
-  isMuted=!isMuted;
-  if(!isMuted&&volumeLevel===0){volumeLevel=0.9;document.getElementById('vol-slider').value=90;}
-  if(isMuted)synth.cancel();
+function toggleMute() {
+  muted = !muted;
+  if (!muted && volLevel === 0) {
+    volLevel = 0.9;
+    document.getElementById('vol-slider').value = 90;
+  }
+  if (muted) synth.cancel();
   updateVolUI();
 }
 
-function updateVolUI(){
-  var slider=document.getElementById('vol-slider');
-  var icon=document.getElementById('vol-icon');
-  var label=document.getElementById('vol-label');
-  var pct=Math.round(volumeLevel*100);
-  var active=!isMuted&&volumeLevel>0;
-  if(!active){
-    icon.innerHTML='&#128263;';label.textContent='Off';
-    slider.style.background='linear-gradient(to right,#ffffff30 0%,#ffffff30 100%)';
+function updateVolUI() {
+  var icon  = document.getElementById('vol-icon');
+  var label = document.getElementById('vol-label');
+  var slider = document.getElementById('vol-slider');
+  var pct   = Math.round(volLevel * 100);
+  var on    = !muted && volLevel > 0;
+  if (!on) {
+    icon.textContent = '\uD83D\uDD07';
+    label.textContent = 'Off';
+    slider.style.background = 'linear-gradient(to right,#ffffff30,#ffffff30)';
   } else {
-    icon.innerHTML=pct>50?'&#128266;':'&#128265;';
-    label.textContent=pct+'%';
-    slider.value=pct;
-    slider.style.background='linear-gradient(to right,var(--accent2) 0%,var(--accent2) '+pct+'%,#ffffff30 '+pct+'%)';
+    icon.textContent = pct > 50 ? '\uD83D\uDD0A' : '\uD83D\uDD09';
+    label.textContent = pct + '%';
+    slider.value = pct;
+    slider.style.background = 'linear-gradient(to right,var(--c2) ' + pct + '%,#ffffff30 ' + pct + '%)';
   }
 }
 
-// --- ENTER / EXIT ---
-function enterPlayground(){
-  document.getElementById('landing').style.display='none';
-  var pg=document.getElementById('playground');pg.style.display='block';
-  try{pg.requestFullscreen?pg.requestFullscreen():pg.webkitRequestFullscreen&&pg.webkitRequestFullscreen();}catch(e){}
-  initCanvas();initBlobs();
-  sessionStart=Date.now();
-  timerInterval=setInterval(updateTimer,1000);
+// ---- Enter / Exit ----
+function enterPlayground() {
+  document.getElementById('landing').style.display = 'none';
+  var pg = document.getElementById('playground');
+  pg.style.display = 'block';
+  try { (pg.requestFullscreen || pg.webkitRequestFullscreen).call(pg); } catch(e) {}
+  initCanvas();
+  initBlobs();
+  sessionStart = Date.now();
+  timerInterval = setInterval(tickTimer, 1000);
   synth.getVoices();
 }
 
-function exitPlayground(){
-  try{document.exitFullscreen?document.exitFullscreen():document.webkitExitFullscreen&&document.webkitExitFullscreen();}catch(e){}
-  clearInterval(timerInterval);clearHold();
-  document.getElementById('landing').style.display='flex';
-  document.getElementById('playground').style.display='none';
-  stats={keys:0,letters:0,numbers:0,emojis:0};consecutiveCount=0;hintHidden=false;
-  document.getElementById('kbd-hint').classList.remove('hidden');
-  updateStatsDisplay();
-}
-
-function updateTimer(){
-  var el=Math.floor((Date.now()-sessionStart)/1000),m=Math.floor(el/60),s=el%60;
-  document.getElementById('stat-time').textContent=m+':'+(s<10?'0'+s:s);
-}
-
-// --- BLOBS ---
-function initBlobs(){
-  var pg=document.getElementById('playground');
-  pg.querySelectorAll('.bg-blob').forEach(function(b){b.remove();});
-  var bc=['#ff6bdf','#6bffde','#6b9fff','#b06bff','#ffe66b','#ff9f6b'];
-  for(var i=0;i<6;i++){
-    var b=document.createElement('div');b.className='bg-blob';
-    var sz=300+Math.random()*400;
-    b.style.cssText='width:'+sz+'px;height:'+sz+'px;background:'+bc[i]+';left:'+(Math.random()*80)+'%;top:'+(Math.random()*80)+'%;animation-duration:'+(15+Math.random()*20)+'s;animation-delay:-'+(Math.random()*20)+'s;';
-    pg.insertBefore(b,pg.firstChild);
-  }
-}
-
-// --- CANVAS ---
-function initCanvas(){
-  artCanvas=document.getElementById('art-canvas');
-  artCanvas.width=window.innerWidth;artCanvas.height=window.innerHeight;
-  artCtx=artCanvas.getContext('2d');artHistory=[];
-}
-
-window.addEventListener('resize',function(){
-  if(artCanvas&&document.getElementById('playground').style.display!=='none'){
-    var img=artCtx.getImageData(0,0,artCanvas.width,artCanvas.height);
-    artCanvas.width=window.innerWidth;artCanvas.height=window.innerHeight;
-    artCtx.putImageData(img,0,0);
-  }
-});
-
-function paintArtStroke(char,color,x,y){
-  var ctx=artCtx,isL=/^[A-Za-z]$/.test(char),isN=/^[0-9]$/.test(char);
-  if(isL){
-    var p=char.toUpperCase().charCodeAt(0)%6+3,r=30+Math.random()*60;
-    for(var i=0;i<p;i++){var a=(i/p)*Math.PI*2;ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();ctx.ellipse(r*.5,0,r,r*.22,0,0,Math.PI*2);ctx.fillStyle=color+'55';ctx.fill();ctx.strokeStyle=color+'aa';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();}
-    ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.fillStyle=color+'cc';ctx.fill();
-  } else if(isN){
-    var rn=parseInt(char)||5;
-    for(var i=rn;i>=1;i--){ctx.beginPath();ctx.arc(x,y,i*18,0,Math.PI*2);ctx.strokeStyle=color+Math.floor((i/rn)*120).toString(16).padStart(2,'0');ctx.lineWidth=2;ctx.stroke();}
-    ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
-  } else {
-    var sp=8;ctx.save();ctx.translate(x,y);ctx.beginPath();
-    for(var i=0;i<sp*2;i++){var rr=i%2===0?60:25,ang=(i/(sp*2))*Math.PI*2;i===0?ctx.moveTo(Math.cos(ang)*rr,Math.sin(ang)*rr):ctx.lineTo(Math.cos(ang)*rr,Math.sin(ang)*rr);}
-    ctx.closePath();ctx.fillStyle=color+'66';ctx.fill();ctx.strokeStyle=color+'bb';ctx.lineWidth=2;ctx.stroke();ctx.restore();
-  }
-  for(var i=Math.max(0,artHistory.length-3);i<artHistory.length;i++){
-    var pv=artHistory[i],d=Math.hypot(pv.x-x,pv.y-y);
-    if(d<300){ctx.beginPath();ctx.moveTo(pv.x,pv.y);ctx.lineTo(x,y);ctx.strokeStyle=color+Math.floor(Math.max(0,1-d/300)*50).toString(16).padStart(2,'0');ctx.lineWidth=1;ctx.stroke();}
-  }
-  artHistory.push({char:char,color:color,x:x,y:y});
-}
-
-// --- KEYS ---
-function clearHold(){if(holdInterval){clearInterval(holdInterval);holdInterval=null;}}
-
-document.addEventListener('keyup',function(e){
-  if(document.getElementById('playground').style.display==='none')return;
-  clearHold();e.preventDefault();
-});
-
-document.addEventListener('keydown',function(e){
-  if(document.getElementById('playground').style.display==='none')return;
-  if(e.repeat){if(!holdInterval)holdInterval=setInterval(spawnEmoji,250);e.preventDefault();return;}
+function exitPlayground() {
+  try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch(e) {}
+  clearInterval(timerInterval);
   clearHold();
-  var key=e.key,isL=/^[a-zA-Z]$/.test(key),isN=/^[0-9]$/.test(key),isV=isL||isN;
-  if(!hintHidden){document.getElementById('kbd-hint').classList.add('hidden');hintHidden=true;}
-  stats.keys++;if(isL)stats.letters++;if(isN)stats.numbers++;updateStatsDisplay();
-  if(isV){
-    consecutiveCount++;speak(key.toLowerCase());spawnKeyPop(key.toUpperCase());
-    var x=80+Math.random()*(window.innerWidth-160),y=80+Math.random()*(window.innerHeight-160),col=COLORS[Math.floor(Math.random()*COLORS.length)];
-    paintArtStroke(key,col,x,y);
-    if(consecutiveCount>=5&&Math.random()<.4){spawnEmoji();consecutiveCount=0;}
+  closeModal();
+  document.getElementById('landing').style.display = 'flex';
+  document.getElementById('playground').style.display = 'none';
+  stats = { keys:0, letters:0, numbers:0, emojis:0 };
+  consecutiveCount = 0; hintGone = false;
+  document.getElementById('hint').classList.remove('gone');
+  updateStats();
+}
+
+function tickTimer() {
+  var e = Math.floor((Date.now() - sessionStart) / 1000);
+  var m = Math.floor(e / 60), s = e % 60;
+  document.getElementById('s-time').textContent = m + ':' + (s < 10 ? '0' + s : s);
+}
+
+// ---- Blobs ----
+function initBlobs() {
+  var pg = document.getElementById('playground');
+  pg.querySelectorAll('.blob').forEach(function(b) { b.remove(); });
+  var bc = ['#ff6bdf','#6bffde','#6b9fff','#b06bff','#ffe66b','#ff9f6b'];
+  for (var i = 0; i < 6; i++) {
+    var b = document.createElement('div');
+    b.className = 'blob';
+    var sz = 300 + Math.random() * 400;
+    b.style.cssText = 'width:'+sz+'px;height:'+sz+'px;background:'+bc[i]+';left:'+(Math.random()*80)+'%;top:'+(Math.random()*80)+'%;animation-duration:'+(15+Math.random()*20)+'s;animation-delay:-'+(Math.random()*20)+'s;';
+    pg.insertBefore(b, pg.firstChild);
+  }
+}
+
+// ---- Canvas ----
+function initCanvas() {
+  artCanvas = document.getElementById('art-canvas');
+  artCanvas.width  = window.innerWidth;
+  artCanvas.height = window.innerHeight;
+  artCtx = artCanvas.getContext('2d');
+  artHistory = [];
+}
+
+window.addEventListener('resize', function() {
+  if (!artCanvas) return;
+  if (document.getElementById('playground').style.display === 'none') return;
+  var d = artCtx.getImageData(0, 0, artCanvas.width, artCanvas.height);
+  artCanvas.width  = window.innerWidth;
+  artCanvas.height = window.innerHeight;
+  artCtx.putImageData(d, 0, 0);
+});
+
+function paintStroke(char, color, x, y) {
+  var ctx = artCtx;
+  var isL = /^[A-Za-z]$/.test(char);
+  var isN = /^[0-9]$/.test(char);
+
+  if (isL) {
+    var petals = char.toUpperCase().charCodeAt(0) % 6 + 3;
+    var radius = 30 + Math.random() * 60;
+    for (var p = 0; p < petals; p++) {
+      var angle = (p / petals) * Math.PI * 2;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.ellipse(radius * .5, 0, radius, radius * .22, 0, 0, Math.PI * 2);
+      ctx.fillStyle   = color + '55'; ctx.fill();
+      ctx.strokeStyle = color + 'aa'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.restore();
+    }
+    ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = color + 'cc'; ctx.fill();
+
+  } else if (isN) {
+    var rings = parseInt(char) || 5;
+    for (var r = rings; r >= 1; r--) {
+      ctx.beginPath(); ctx.arc(x, y, r * 18, 0, Math.PI * 2);
+      ctx.strokeStyle = color + Math.floor((r / rings) * 120).toString(16).padStart(2, '0');
+      ctx.lineWidth = 2; ctx.stroke();
+    }
+    ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2);
+    ctx.fillStyle = color; ctx.fill();
+
   } else {
-    consecutiveCount=0;spawnEmoji();
-    paintArtStroke('*',COLORS[Math.floor(Math.random()*COLORS.length)],80+Math.random()*(window.innerWidth-160),80+Math.random()*(window.innerHeight-160));
+    var sp = 8;
+    ctx.save(); ctx.translate(x, y); ctx.beginPath();
+    for (var i = 0; i < sp * 2; i++) {
+      var rr = i % 2 === 0 ? 60 : 25;
+      var a  = (i / (sp * 2)) * Math.PI * 2;
+      i === 0 ? ctx.moveTo(Math.cos(a)*rr, Math.sin(a)*rr) : ctx.lineTo(Math.cos(a)*rr, Math.sin(a)*rr);
+    }
+    ctx.closePath(); ctx.fillStyle = color + '66'; ctx.fill();
+    ctx.strokeStyle = color + 'bb'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.restore();
+  }
+
+  for (var j = Math.max(0, artHistory.length - 3); j < artHistory.length; j++) {
+    var prev = artHistory[j];
+    var dist = Math.hypot(prev.x - x, prev.y - y);
+    if (dist < 300) {
+      ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(x, y);
+      var al = Math.max(0, 1 - dist / 300);
+      ctx.strokeStyle = color + Math.floor(al * 50).toString(16).padStart(2, '0');
+      ctx.lineWidth = 1; ctx.stroke();
+    }
+  }
+  artHistory.push({ char: char, color: color, x: x, y: y });
+}
+
+// ---- Key Handler ----
+function clearHold() {
+  if (holdInterval) { clearInterval(holdInterval); holdInterval = null; }
+}
+
+document.addEventListener('keyup', function(e) {
+  if (document.getElementById('playground').style.display === 'none') return;
+  clearHold();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (document.getElementById('playground').style.display === 'none') return;
+  // Don't intercept if modal is open and user is typing their name
+  if (document.getElementById('art-modal').classList.contains('open')) return;
+
+  if (e.repeat) {
+    if (!holdInterval) holdInterval = setInterval(spawnEmoji, 250);
+    e.preventDefault();
+    return;
+  }
+  clearHold();
+
+  var key = e.key;
+  var isL = /^[a-zA-Z]$/.test(key);
+  var isN = /^[0-9]$/.test(key);
+  var isV = isL || isN;
+
+  if (!hintGone) {
+    document.getElementById('hint').classList.add('gone');
+    hintGone = true;
+  }
+
+  stats.keys++;
+  if (isL) stats.letters++;
+  if (isN) stats.numbers++;
+  updateStats();
+
+  if (isV) {
+    consecutiveCount++;
+    speak(key.toLowerCase());
+    spawnLetter(key.toUpperCase());
+    var x = 80 + Math.random() * (window.innerWidth  - 160);
+    var y = 80 + Math.random() * (window.innerHeight - 160);
+    paintStroke(key, COLORS[Math.floor(Math.random() * COLORS.length)], x, y);
+    if (consecutiveCount >= 5 && Math.random() < .4) { spawnEmoji(); consecutiveCount = 0; }
+  } else {
+    consecutiveCount = 0;
+    spawnEmoji();
+    paintStroke('*', COLORS[Math.floor(Math.random() * COLORS.length)],
+      80 + Math.random() * (window.innerWidth - 160),
+      80 + Math.random() * (window.innerHeight - 160));
   }
   e.preventDefault();
 });
 
-function spawnKeyPop(ch){
-  var el=document.createElement('div');el.className='key-pop';el.textContent=ch;
-  var col=COLORS[Math.floor(Math.random()*COLORS.length)],sz=60+Math.random()*120,x=5+Math.random()*85,y=5+Math.random()*75,dur=2.5+Math.random()*1.5;
-  el.style.cssText='left:'+x+'vw;top:'+y+'vh;font-size:'+sz+'px;color:'+col+';text-shadow:0 0 30px '+col+'88;animation-duration:'+dur+'s;';
+function spawnLetter(ch) {
+  var el = document.createElement('div');
+  el.className = 'kpop';
+  el.textContent = ch;
+  var color = COLORS[Math.floor(Math.random() * COLORS.length)];
+  var size  = 60 + Math.random() * 120;
+  var x     = 5  + Math.random() * 85;
+  var y     = 5  + Math.random() * 75;
+  var dur   = 2.5 + Math.random() * 1.5;
+  el.style.cssText = 'left:'+x+'vw;top:'+y+'vh;font-size:'+size+'px;color:'+color+';text-shadow:0 0 30px '+color+'88;animation-duration:'+dur+'s;';
   document.getElementById('playground').appendChild(el);
-  el.addEventListener('animationend',function(){el.remove();});
+  el.addEventListener('animationend', function() { el.remove(); });
 }
 
-function spawnEmoji(){
-  var el=document.createElement('div');el.className='emoji-pop';
-  el.innerHTML=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-  var x=10+Math.random()*70,y=10+Math.random()*70;
-  el.style.cssText='left:'+x+'vw;top:'+y+'vh;animation-duration:'+(2+Math.random())+'s;';
+function spawnEmoji() {
+  var el = document.createElement('div');
+  el.className = 'epop';
+  el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  el.style.cssText = 'left:'+(10+Math.random()*70)+'vw;top:'+(10+Math.random()*70)+'vh;animation-duration:'+(2+Math.random())+'s;';
   document.getElementById('playground').appendChild(el);
-  el.addEventListener('animationend',function(){el.remove();});
-  stats.emojis++;updateStatsDisplay();
+  el.addEventListener('animationend', function() { el.remove(); });
+  stats.emojis++;
+  updateStats();
 }
 
-function updateStatsDisplay(){
-  document.getElementById('stat-keys').textContent=stats.keys;
-  document.getElementById('stat-letters').textContent=stats.letters;
-  document.getElementById('stat-numbers').textContent=stats.numbers;
-  document.getElementById('stat-emojis').textContent=stats.emojis;
+function updateStats() {
+  document.getElementById('s-keys').textContent    = stats.keys;
+  document.getElementById('s-letters').textContent = stats.letters;
+  document.getElementById('s-numbers').textContent = stats.numbers;
+  document.getElementById('s-emojis').textContent  = stats.emojis;
 }
 
-// --- ART MODAL ---
-function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
-  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
-}
+// ---- Art Modal ----
+function buildImage() {
+  var name = document.getElementById('artist-name').value.trim();
+  var now  = new Date();
+  var dateStr = now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-function buildArtImage(){
-  var name=(document.getElementById('artist-name')||{value:''}).value.trim();
-  var now=new Date(),dateStr=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  var fc=document.createElement('canvas');fc.width=artCanvas.width;fc.height=artCanvas.height;
-  var ctx=fc.getContext('2d');
-  ctx.fillStyle='#050410';ctx.fillRect(0,0,fc.width,fc.height);ctx.drawImage(artCanvas,0,0);
-  var W=fc.width,H=fc.height;
-  var elapsed=sessionStart?Math.floor((Date.now()-sessionStart)/1000):0;
-  var m=Math.floor(elapsed/60),s=elapsed%60,ts=m+':'+(s<10?'0'+s:s);
-  var pw=440,ph=name?258:228,px=30,py=H-ph-30;
-  ctx.save();ctx.globalAlpha=.92;ctx.fillStyle='#0d0b1e';
-  roundRect(ctx,px,py,pw,ph,22);ctx.fill();
-  ctx.globalAlpha=1;ctx.strokeStyle='#ffffff22';ctx.lineWidth=2;
-  roundRect(ctx,px,py,pw,ph,22);ctx.stroke();
-  var ly=py+44;
-  if(name){
-    ctx.font='bold 26px sans-serif';ctx.fillStyle='#ff6bdf';
-    ctx.fillText(name+"'s Masterpiece",px+22,ly);ly+=28;
-    ctx.font='13px sans-serif';ctx.fillStyle='#ffffff50';
-    ctx.fillText('Key Pop Kids! Keyboard Adventure',px+22,ly);ly+=26;
-  } else {
-    ctx.font='bold 22px sans-serif';ctx.fillStyle='#ffe66b';
-    ctx.fillText('My Key Pop Kids! Masterpiece',px+22,ly);ly+=36;
-  }
-  ctx.strokeStyle='#ffffff18';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(px+22,ly);ctx.lineTo(px+pw-22,ly);ctx.stroke();ly+=22;
-  ctx.font='15px sans-serif';ctx.fillStyle='#ffffffcc';
-  ctx.fillText('Keys Pressed: '+stats.keys,px+22,ly);ly+=26;
-  ctx.fillText('Letters: '+stats.letters+'     Numbers: '+stats.numbers,px+22,ly);ly+=26;
-  ctx.fillText('Emojis Triggered: '+stats.emojis,px+22,ly);ly+=26;
-  ctx.fillText('Session Time: '+ts,px+22,ly);ly+=26;
-  ctx.font='bold 14px sans-serif';ctx.fillStyle='#ffe66b';
-  ctx.fillText('Date: '+dateStr,px+22,ly);ly+=22;
-  ctx.font='11px sans-serif';ctx.fillStyle='#ffffff30';
-  ctx.fillText('keypopkids.com  |  The Magical Keyboard Adventure',px+22,ly);
+  var fc  = document.createElement('canvas');
+  fc.width  = artCanvas.width;
+  fc.height = artCanvas.height;
+  var ctx = fc.getContext('2d');
+
+  ctx.fillStyle = '#050410';
+  ctx.fillRect(0, 0, fc.width, fc.height);
+  ctx.drawImage(artCanvas, 0, 0);
+
+  var W = fc.width, H = fc.height;
+  var elapsed = sessionStart ? Math.floor((Date.now() - sessionStart) / 1000) : 0;
+  var m = Math.floor(elapsed / 60), s = elapsed % 60;
+  var ts = m + ':' + (s < 10 ? '0' + s : s);
+
+  var pw = 440, ph = name ? 256 : 224;
+  var px = 30,  py = H - ph - 30;
+
+  // Panel
+  ctx.save();
+  ctx.globalAlpha = .92;
+  ctx.fillStyle = '#0d0b1e';
+  ctx.beginPath();
+  ctx.moveTo(px+20, py);
+  ctx.lineTo(px+pw-20, py); ctx.quadraticCurveTo(px+pw, py, px+pw, py+20);
+  ctx.lineTo(px+pw, py+ph-20); ctx.quadraticCurveTo(px+pw, py+ph, px+pw-20, py+ph);
+  ctx.lineTo(px+20, py+ph); ctx.quadraticCurveTo(px, py+ph, px, py+ph-20);
+  ctx.lineTo(px, py+20); ctx.quadraticCurveTo(px, py, px+20, py);
+  ctx.closePath();
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = '#ffffff25'; ctx.lineWidth = 2;
+  ctx.stroke();
   ctx.restore();
-  ctx.save();ctx.font='bold 64px sans-serif';ctx.globalAlpha=.05;
-  ctx.fillStyle='#ffffff';ctx.textAlign='center';
-  ctx.fillText('Key Pop Kids!',W/2,H/2+26);ctx.restore();
+
+  var ly = py + 44;
+
+  ctx.save();
+  if (name) {
+    ctx.font = 'bold 26px sans-serif'; ctx.fillStyle = '#ff6bdf';
+    ctx.fillText(name + "'s Masterpiece", px+22, ly); ly += 28;
+    ctx.font = '13px sans-serif'; ctx.fillStyle = '#ffffff55';
+    ctx.fillText('KeyPopKids! - The Magical Keyboard Adventure', px+22, ly); ly += 26;
+  } else {
+    ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#ffe66b';
+    ctx.fillText('My KeyPopKids! Masterpiece', px+22, ly); ly += 36;
+  }
+
+  ctx.strokeStyle = '#ffffff18'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(px+22, ly); ctx.lineTo(px+pw-22, ly); ctx.stroke();
+  ly += 22;
+
+  ctx.font = '15px sans-serif'; ctx.fillStyle = '#ffffffcc';
+  ctx.fillText('Keys Pressed:  ' + stats.keys, px+22, ly); ly += 26;
+  ctx.fillText('Letters: ' + stats.letters + '     Numbers: ' + stats.numbers, px+22, ly); ly += 26;
+  ctx.fillText('Emojis Triggered: ' + stats.emojis, px+22, ly); ly += 26;
+  ctx.fillText('Session Time: ' + ts, px+22, ly); ly += 26;
+  ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = '#ffe66b';
+  ctx.fillText('Date: ' + dateStr, px+22, ly); ly += 22;
+  ctx.font = '11px sans-serif'; ctx.fillStyle = '#ffffff33';
+  ctx.fillText('keypopkids.com  |  The Magical Keyboard Adventure', px+22, ly);
+  ctx.restore();
+
+  // Watermark
+  ctx.save();
+  ctx.globalAlpha = .05; ctx.fillStyle = '#fff';
+  ctx.font = 'bold 72px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('KeyPopKids!', W/2, H/2 + 28);
+  ctx.restore();
+
   return fc.toDataURL('image/png');
 }
 
-function openArtModal(){
-  document.getElementById('artist-name').value='';
-  document.getElementById('art-preview-img').src=buildArtImage();
+function openModal() {
+  document.getElementById('artist-name').value = '';
+  document.getElementById('preview-img').src = buildImage();
   document.getElementById('art-modal').classList.add('open');
-  setTimeout(function(){document.getElementById('artist-name').focus();},200);
-}
-function refreshArtPreview(){document.getElementById('art-preview-img').src=buildArtImage();}
-function closeArtModal(){document.getElementById('art-modal').classList.remove('open');}
-function downloadArt(){
-  var name=document.getElementById('artist-name').value.trim();
-  var safe=name?name.replace(/[^a-z0-9]/gi,'-').toLowerCase()+'-':'';
-  var a=document.createElement('a');a.download='keypopkids-'+safe+'masterpiece.png';a.href=document.getElementById('art-preview-img').src;a.click();
+  setTimeout(function() { document.getElementById('artist-name').focus(); }, 150);
 }
 
-document.getElementById('art-modal').addEventListener('click',function(e){if(e.target===this)closeArtModal();});
-window.addEventListener('keydown',function(e){if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].indexOf(e.code)!==-1&&document.getElementById('playground').style.display!=='none')e.preventDefault();});
+function refreshPreview() {
+  document.getElementById('preview-img').src = buildImage();
+}
+
+function closeModal() {
+  document.getElementById('art-modal').classList.remove('open');
+}
+
+function downloadArt() {
+  var name = document.getElementById('artist-name').value.trim();
+  var safe = name ? name.replace(/[^a-z0-9]/gi, '-').toLowerCase() + '-' : '';
+  var a = document.createElement('a');
+  a.download = 'keypopkids-' + safe + 'masterpiece.png';
+  a.href = document.getElementById('preview-img').src;
+  a.click();
+}
+
+// Close modal on backdrop click
+document.getElementById('art-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Block scroll keys only in playground
+window.addEventListener('keydown', function(e) {
+  if (document.getElementById('playground').style.display !== 'none') {
+    if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].indexOf(e.code) !== -1) {
+      if (!document.getElementById('art-modal').classList.contains('open')) {
+        e.preventDefault();
+      }
+    }
+  }
+});
 </script>
 </body>
 </html>
