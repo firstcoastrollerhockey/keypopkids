@@ -121,6 +121,123 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 .mbtn.dl { background: linear-gradient(135deg, var(--c2), var(--c4)); color: #0d0b1e; }
 .mbtn.cl { background: #ffffff22; color: #fff; }
 
+/* ---- BADGES ---- */
+#badge-toast {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0.4);
+  z-index: 300;
+  pointer-events: none;
+  text-align: center;
+  width: clamp(280px, 50vw, 480px);
+}
+#badge-toast.show {
+  animation: badgePop 3.8s ease-out forwards;
+}
+@keyframes badgePop {
+  0%   { opacity:0; transform:translate(-50%,-50%) scale(0.3) rotate(-8deg); }
+  12%  { opacity:1; transform:translate(-50%,-50%) scale(1.12) rotate(3deg); }
+  20%  { transform:translate(-50%,-50%) scale(0.96) rotate(-1deg); }
+  28%  { transform:translate(-50%,-50%) scale(1.03) rotate(1deg); }
+  35%  { transform:translate(-50%,-50%) scale(1) rotate(0deg); }
+  72%  { opacity:1; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
+  100% { opacity:0; transform:translate(-50%,-50%) scale(0.85) rotate(4deg); }
+}
+
+/* Colorful pulsing circle burst behind icon */
+#badge-burst {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#badge-burst::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--burst-color, #ffe66b) 0%, transparent 70%);
+  animation: burstpulse 1s ease-in-out infinite;
+  opacity: 0.8;
+}
+#badge-burst::after {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--burst-color2, #ff6bdf) 0%, transparent 70%);
+  animation: burstpulse 1s ease-in-out infinite reverse;
+  opacity: 0.7;
+}
+@keyframes burstpulse { 0%,100%{transform:scale(1);opacity:0.7;} 50%{transform:scale(1.3);opacity:1;} }
+
+#badge-icon {
+  font-size: 72px;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  animation: iconbounce 0.6s ease-out 0.3s both;
+  filter: drop-shadow(0 4px 12px #00000066);
+}
+@keyframes iconbounce { 0%{transform:scale(0.4) rotate(-20deg);} 60%{transform:scale(1.2) rotate(8deg);} 80%{transform:scale(0.9);} 100%{transform:scale(1) rotate(0deg);} }
+
+/* Semi-transparent card */
+#badge-card {
+  background: rgba(13, 11, 30, 0.55);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 28px;
+  padding: 20px 36px 28px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+  margin-top: -20px;
+  position: relative;
+}
+#badge-unlocked {
+  font-family: 'Fredoka One', cursive;
+  font-size: 13px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--burst-color, #ffe66b);
+  margin-bottom: 4px;
+  text-shadow: 0 0 20px var(--burst-color, #ffe66b);
+}
+#badge-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(22px, 3.5vw, 34px);
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+#badge-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* Sparkle particles */
+.badge-sparkle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparklefly 1.2s ease-out forwards;
+}
+@keyframes sparklefly {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+}
+
+.dash-badges { display: flex; flex-wrap: wrap; gap: 12px; }
+.badge-pill { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid #ffffff12; border-radius: 14px; padding: 12px 18px; }
+.badge-pill.earned { border-color: #ffe66b44; background: linear-gradient(135deg,#1a1535,#12102a); }
+.badge-pill .bp-icon { font-size: 26px; }
+.badge-pill .bp-info .bp-name { font-family: 'Fredoka One', cursive; font-size: 15px; color: var(--c3); }
+.badge-pill .bp-info .bp-cond { font-size: 11px; color: #ffffff44; }
+.badge-pill.locked { opacity: .4; filter: grayscale(1); }
+
 /* ---- WORD MODE ---- */
 #word-overlay { display: none; position: absolute; inset: 0; z-index: 15; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; gap: 20px; }
 #word-overlay.on { display: flex; }
@@ -242,6 +359,18 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 <div id="playground">
   <canvas id="art-canvas"></canvas>
   <div id="hint">Press any key to begin your adventure!</div>
+
+  <!-- Badge toast (fullscreen-safe, inside playground) -->
+  <div id="badge-toast">
+    <div id="badge-burst">
+      <div id="badge-icon">&#127942;</div>
+    </div>
+    <div id="badge-card">
+      <div id="badge-unlocked">&#10024; Badge Unlocked! &#10024;</div>
+      <div id="badge-title">Century Typer</div>
+      <div id="badge-desc">Press 100 keys in one session</div>
+    </div>
+  </div>
 
   <!-- Mode selector -->
   <div id="mode-bar">
@@ -448,6 +577,8 @@ function enterPlayground() {
   initCanvas();
   initBlobs();
   sessionStart = Date.now();
+  sessionLettersSeen = {};
+  sessionNumbersSeen = {};
   timerInterval = setInterval(tickTimer, 1000);
 }
 
@@ -596,9 +727,12 @@ document.addEventListener('keydown', function(e) {
   }
 
   // Increment 24hr live counter on every valid keypress
-  if (isV) {
+  var isSpace = (e.code === 'Space');
+  if (isV || isSpace) {
     incrementLiveCount();
     if (isL) recordLetterPress(key);
+    if (isN) { sessionNumbersSeen[key] = true; recordKeyPress('NUM_' + key); }
+    if (isSpace) recordKeyPress('SPACE');
   }
 
   // Route to word mode handler
@@ -668,6 +802,7 @@ function updateStats() {
   document.getElementById('s-letters').textContent = stats.letters;
   document.getElementById('s-numbers').textContent = stats.numbers;
   document.getElementById('s-emojis').textContent  = stats.emojis;
+  checkBadges();
 }
 
 // ---- Art Modal ----
@@ -874,7 +1009,7 @@ var pinUnlocked = false;
 
 function getDashData() {
   try {
-    return JSON.parse(localStorage.getItem(DASH_KEY) || '{"sessions":[],"letterCounts":{},"totalKeys":0,"totalTime":0,"wordsCompleted":0,"lettersTraced":0}');
+    return JSON.parse(localStorage.getItem(DASH_KEY) || '{"sessions":[],"keyCounts":{},"totalKeys":0,"totalTime":0,"wordsCompleted":0,"lettersTraced":0}');
   } catch(e) {
     return { sessions:[], letterCounts:{}, totalKeys:0, totalTime:0, wordsCompleted:0, lettersTraced:0 };
   }
@@ -892,9 +1027,22 @@ function saveDashStat(type, val) {
 }
 
 function recordLetterPress(letter) {
+  sessionLettersSeen[letter.toUpperCase()] = true;
+  recordKeyPress(letter.toUpperCase());
+}
+
+function recordKeyPress(key) {
   var d = getDashData();
-  var l = letter.toUpperCase();
-  d.letterCounts[l] = (d.letterCounts[l] || 0) + 1;
+  if (!d.keyCounts) d.keyCounts = {};
+  // migrate old letterCounts into keyCounts
+  if (d.letterCounts) {
+    Object.keys(d.letterCounts).forEach(function(k) {
+      d.keyCounts[k] = (d.keyCounts[k]||0) + (d.letterCounts[k]||0);
+    });
+    delete d.letterCounts;
+  }
+  var k = key.toUpperCase();
+  d.keyCounts[k] = (d.keyCounts[k] || 0) + 1;
   saveDashData(d);
 }
 
@@ -949,8 +1097,9 @@ function changePin() {
 }
 
 function clearDashData() {
-  if (confirm('Clear all session history and stats? This cannot be undone.')) {
+  if (confirm('Clear all session history, stats and badges? This cannot be undone.')) {
     localStorage.removeItem(DASH_KEY);
+    localStorage.removeItem('kpk_badges');
     renderDashboard();
   }
 }
@@ -967,6 +1116,18 @@ function closeDashboard() {
   document.getElementById('dashboard').classList.remove('open');
 }
 
+function makeHeatKey(label, key, cnt, maxCount) {
+  var intensity = cnt / maxCount;
+  var box = document.createElement('div');
+  box.className = 'lh-key';
+  var r = Math.round(107 + intensity * 148);
+  var g = Math.round(107 + intensity * 100);
+  var b2 = Math.round(255 - intensity * 100);
+  box.style.background = cnt === 0 ? '#ffffff08' : 'rgba('+r+','+g+','+b2+','+Math.max(0.15,intensity)+')';
+  box.innerHTML = label + '<span class="lh-count">' + cnt + '</span>';
+  return box;
+}
+
 function renderDashboard() {
   var d = getDashData();
 
@@ -978,29 +1139,56 @@ function renderDashboard() {
   document.getElementById('d-words-done').textContent = (d.wordsCompleted||0);
   document.getElementById('d-letters-done').textContent = (d.lettersTraced||0);
 
-  // Favourite letter
-  var lc = d.letterCounts || {};
-  var favLetter = '-', favCount = 0;
-  Object.keys(lc).forEach(function(k) { if (lc[k] > favCount) { favCount = lc[k]; favLetter = k; } });
-  document.getElementById('d-fav-letter').textContent = favLetter;
+  // Favourite key
+  var kc = d.keyCounts || d.letterCounts || {};
+  var favKey = '-', favCount = 0;
+  Object.keys(kc).forEach(function(k) { if (kc[k] > favCount) { favCount = kc[k]; favKey = k === 'SPACE' ? 'SPACE' : k; } });
+  document.getElementById('d-fav-letter').textContent = favKey;
 
-  // Letter heatmap
+  // Key heatmap — letters + numbers + space
   var hmap = document.getElementById('letter-heatmap');
   hmap.innerHTML = '';
-  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  var maxCount = Math.max(1, Math.max.apply(null, letters.map(function(l){ return lc[l]||0; })));
-  letters.forEach(function(l) {
-    var cnt = lc[l] || 0;
-    var intensity = cnt / maxCount;
-    var box = document.createElement('div');
-    box.className = 'lh-key';
-    var r = Math.round(107 + intensity * 148);
-    var g = Math.round(107 + intensity * 100);
-    var b = Math.round(255 - intensity * 100);
-    box.style.background = cnt === 0 ? '#ffffff08' : 'rgba('+r+','+g+','+b+','+Math.max(0.15, intensity)+')';
-    box.innerHTML = l + '<span class="lh-count">' + cnt + '</span>';
-    hmap.appendChild(box);
+  var allKeys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat(['0','1','2','3','4','5','6','7','8','9']).concat(['SPACE']);
+  var maxCount = Math.max(1, Math.max.apply(null, allKeys.map(function(k){
+    var key = k === 'SPACE' ? 'SPACE' : (k.length === 1 ? k : 'NUM_' + k);
+    return kc[key] || kc[k] || 0;
+  })));
+
+  // Section: Letters
+  var ltitle = document.createElement('div');
+  ltitle.style.cssText = 'width:100%;font-size:11px;color:#ffffff44;margin:6px 0 4px;font-family:Nunito,sans-serif;letter-spacing:.08em;text-transform:uppercase;';
+  ltitle.textContent = 'Letters';
+  hmap.appendChild(ltitle);
+
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(l) {
+    var cnt = kc[l] || 0;
+    hmap.appendChild(makeHeatKey(l, l, cnt, maxCount));
   });
+
+  // Section: Numbers
+  var ntitle = document.createElement('div');
+  ntitle.style.cssText = 'width:100%;font-size:11px;color:#ffffff44;margin:10px 0 4px;font-family:Nunito,sans-serif;letter-spacing:.08em;text-transform:uppercase;';
+  ntitle.textContent = 'Numbers';
+  hmap.appendChild(ntitle);
+
+  '0123456789'.split('').forEach(function(n) {
+    var cnt = kc['NUM_' + n] || kc[n] || 0;
+    hmap.appendChild(makeHeatKey(n, 'NUM_' + n, cnt, maxCount));
+  });
+
+  // Section: Special
+  var stitle = document.createElement('div');
+  stitle.style.cssText = 'width:100%;font-size:11px;color:#ffffff44;margin:10px 0 4px;font-family:Nunito,sans-serif;letter-spacing:.08em;text-transform:uppercase;';
+  stitle.textContent = 'Special';
+  hmap.appendChild(stitle);
+  var spaceCnt = kc['SPACE'] || 0;
+  var spaceBox = makeHeatKey('SPACE', 'SPACE', spaceCnt, maxCount);
+  spaceBox.style.width = '100px';
+  spaceBox.style.borderRadius = '12px';
+  hmap.appendChild(spaceBox);
+
+  // Badges
+  renderBadges();
 
   // Sessions list
   var sl = document.getElementById('session-list');
@@ -1026,6 +1214,151 @@ function renderDashboard() {
 }
 
 // ============================================================
+// BADGES & MILESTONES
+// ============================================================
+var BADGES = [
+  { id:'first_key',   icon:'&#9832;',  name:'First Pop!',        desc:'Press your very first key',          check: function(s,d){ return s.keys >= 1; } },
+  { id:'keys_10',     icon:'&#127381;',name:'Getting Started',    desc:'Press 10 keys in one session',       check: function(s,d){ return s.keys >= 10; } },
+  { id:'keys_50',     icon:'&#11088;', name:'Key Explorer',       desc:'Press 50 keys in one session',       check: function(s,d){ return s.keys >= 50; } },
+  { id:'keys_100',    icon:'&#127942;',name:'Century Typer',      desc:'Press 100 keys in one session',      check: function(s,d){ return s.keys >= 100; } },
+  { id:'keys_250',    icon:'&#128293;',name:'Keyboard Wizard',    desc:'Press 250 keys in one session',      check: function(s,d){ return s.keys >= 250; } },
+  { id:'keys_500',    icon:'&#128640;',name:'Rocket Fingers',     desc:'Press 500 keys in one session',      check: function(s,d){ return s.keys >= 500; } },
+  { id:'letters_all', icon:'&#127752;',name:'Alphabet Champion',  desc:'Type every letter A-Z in one session',check: function(s,d){ return checkAllLetters(); } },
+  { id:'numbers_all', icon:'&#128290;',name:'Number Cruncher',    desc:'Type every number 0-9 in one session',check: function(s,d){ return checkAllNumbers(); } },
+  { id:'word_first',  icon:'&#128216;',name:'First Word!',        desc:'Complete your first word in Word Mode',check: function(s,d){ return (d.wordsCompleted||0) >= 1; } },
+  { id:'word_10',     icon:'&#128218;',name:'Word Wizard',        desc:'Complete 10 words in Word Mode',     check: function(s,d){ return (d.wordsCompleted||0) >= 10; } },
+  { id:'traced_26',   icon:'&#9997;',  name:'Alphabet Tracer',    desc:'Trace all 26 letters',               check: function(s,d){ return (d.lettersTraced||0) >= 26; } },
+  { id:'emojis_10',   icon:'&#127881;',name:'Emoji Maniac',       desc:'Trigger 10 emojis in one session',   check: function(s,d){ return s.emojis >= 10; } },
+  { id:'session_5',   icon:'&#128198;',name:'Regular Typer',      desc:'Play 5 sessions total',              check: function(s,d){ return (d.sessions||[]).length >= 5; } },
+  { id:'session_10',  icon:'&#127775;',name:'Keyboard Star',      desc:'Play 10 sessions total',             check: function(s,d){ return (d.sessions||[]).length >= 10; } },
+];
+
+var sessionLettersSeen = {};
+var sessionNumbersSeen = {};
+
+function checkAllLetters() {
+  return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').every(function(l){ return sessionLettersSeen[l]; });
+}
+function checkAllNumbers() {
+  return '0123456789'.split('').every(function(n){ return sessionNumbersSeen[n]; });
+}
+
+function getEarnedBadges() {
+  try { return JSON.parse(localStorage.getItem('kpk_badges') || '[]'); } catch(e){ return []; }
+}
+function saveEarnedBadge(id) {
+  var earned = getEarnedBadges();
+  if (earned.indexOf(id) === -1) { earned.push(id); localStorage.setItem('kpk_badges', JSON.stringify(earned)); }
+}
+
+function checkBadges() {
+  if (document.getElementById('playground').style.display === 'none') return;
+  try {
+    var d = getDashData();
+    var earned = getEarnedBadges();
+    for (var i = 0; i < BADGES.length; i++) {
+      var badge = BADGES[i];
+      if (earned.indexOf(badge.id) === -1) {
+        var result = false;
+        try { result = badge.check(stats, d); } catch(e) {}
+        if (result) {
+          saveEarnedBadge(badge.id);
+          showBadgeToast(badge);
+          break; // show one at a time, next will appear on next key
+        }
+      }
+    }
+  } catch(e) {}
+}
+
+var BADGE_PALETTES = [
+  { burst: '#ffe66b', burst2: '#ff9f6b' },
+  { burst: '#ff6bdf', burst2: '#b06bff' },
+  { burst: '#6bffde', burst2: '#6b9fff' },
+  { burst: '#6bffa6', burst2: '#6bffde' },
+  { burst: '#ff6b6b', burst2: '#ff9f6b' },
+];
+var badgePaletteIdx = 0;
+
+function showBadgeToast(badge) {
+  var toast = document.getElementById('badge-toast');
+  var palette = BADGE_PALETTES[badgePaletteIdx % BADGE_PALETTES.length];
+  badgePaletteIdx++;
+
+  // Set burst colors via CSS vars
+  toast.style.setProperty('--burst-color',  palette.burst);
+  toast.style.setProperty('--burst-color2', palette.burst2);
+
+  document.getElementById('badge-icon').innerHTML    = badge.icon;
+  document.getElementById('badge-title').textContent = badge.name;
+  document.getElementById('badge-desc').textContent  = badge.desc;
+
+  toast.style.display = 'none';
+  void toast.offsetWidth; // force reflow
+  toast.style.display = 'block';
+  toast.classList.remove('show');
+  void toast.offsetWidth;
+  toast.classList.add('show');
+
+  // Spawn sparkle particles
+  spawnBadgeSparkles(palette.burst, palette.burst2);
+
+  // Celebration emojis
+  for (var i = 0; i < 10; i++) { (function(d2){ setTimeout(spawnEmoji, d2 * 90); })(i); }
+  setTimeout(function() {
+    toast.classList.remove('show');
+    toast.style.display = 'none';
+  }, 3900);
+}
+
+function spawnBadgeSparkles(c1, c2) {
+  var pg = document.getElementById('playground');
+  var cx = window.innerWidth / 2;
+  var cy = window.innerHeight / 2;
+  var colors = [c1, c2, '#ffffff', '#ffe66b', '#ff6bdf'];
+  for (var i = 0; i < 20; i++) {
+    (function(idx) {
+      setTimeout(function() {
+        var sp = document.createElement('div');
+        sp.className = 'badge-sparkle';
+        var size = 6 + Math.random() * 14;
+        var angle = Math.random() * Math.PI * 2;
+        var dist  = 120 + Math.random() * 220;
+        sp.style.cssText = [
+          'width:'+size+'px',
+          'height:'+size+'px',
+          'left:'+(cx - size/2)+'px',
+          'top:'+(cy - size/2)+'px',
+          'background:'+colors[Math.floor(Math.random()*colors.length)],
+          '--sx:'+(Math.cos(angle)*dist)+'px',
+          '--sy:'+(Math.sin(angle)*dist)+'px',
+          'animation-duration:'+(0.8+Math.random()*0.6)+'s',
+          'animation-delay:'+(Math.random()*0.3)+'s',
+          'z-index:350',
+          'position:absolute'
+        ].join(';');
+        pg.appendChild(sp);
+        setTimeout(function(){ sp.remove(); }, 1600);
+      }, idx * 40);
+    })(i);
+  }
+}
+
+function renderBadges() {
+  var wrap = document.getElementById('dash-badges');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  var earned = getEarnedBadges();
+  BADGES.forEach(function(badge) {
+    var isEarned = earned.indexOf(badge.id) !== -1;
+    var pill = document.createElement('div');
+    pill.className = 'badge-pill ' + (isEarned ? 'earned' : 'locked');
+    pill.innerHTML = '<span class="bp-icon">' + badge.icon + '</span><div class="bp-info"><div class="bp-name">' + badge.name + '</div><div class="bp-cond">' + badge.desc + '</div></div>';
+    wrap.appendChild(pill);
+  });
+}
+
+// ============================================================
 // PATCH setMode to handle word mode
 // ============================================================
 var _origSetMode = setMode;
@@ -1048,10 +1381,10 @@ setMode = function(mode) {
   _origSetMode(mode);
 };
 
-// Block scroll keys only in playground
+// Block scroll keys only in playground (Space is handled in main keydown)
 window.addEventListener('keydown', function(e) {
   if (document.getElementById('playground').style.display !== 'none') {
-    if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].indexOf(e.code) !== -1) {
+    if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].indexOf(e.code) !== -1) {
       if (!document.getElementById('art-modal').classList.contains('open')) {
         e.preventDefault();
       }
@@ -1290,6 +1623,12 @@ function copyShareLink() {
     <div class="dash-section">
       <h2>&#9658; Letter Activity</h2>
       <div class="letter-heatmap" id="letter-heatmap"></div>
+    </div>
+
+    <!-- Badges earned -->
+    <div class="dash-section">
+      <h2>&#9658; Badges Earned</h2>
+      <div class="dash-badges" id="dash-badges"></div>
     </div>
 
     <!-- Recent sessions -->
