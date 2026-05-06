@@ -1155,13 +1155,16 @@ document.addEventListener('keydown', function(e) {
     hintGone = true;
   }
 
-  // Increment 24hr live counter on every valid keypress
+  // Track ALL keys — letters, numbers, space — for global counter and dashboard
   var isSpace = (e.code === 'Space');
   if (isV || isSpace) {
     incrementLiveCount();
     if (isL) recordLetterPress(key);
     if (isN) { sessionNumbersSeen[key] = true; recordKeyPress('NUM_' + key); }
     if (isSpace) recordKeyPress('SPACE');
+  } else {
+    // Non letter/number/space keys still count toward global + session total
+    incrementLiveCount();
   }
 
   // Route to word mode handler
