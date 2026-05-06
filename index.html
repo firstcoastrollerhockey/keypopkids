@@ -518,6 +518,64 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
   padding-top: 24px;
   border-top: 1px solid #ffffff08;
 }
+.about-footer a { color: #ffffff44; text-decoration: none; margin: 0 8px; }
+.about-footer a:hover { color: #ffffffaa; }
+
+/* ---- LEGAL MODALS ---- */
+.legal-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 3000;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+.legal-modal.open { display: block; }
+.legal-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid #ffffff12;
+  border-radius: 24px;
+  padding: 40px;
+}
+.legal-inner h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(24px, 4vw, 36px);
+  color: var(--c3);
+  margin-bottom: 6px;
+}
+.legal-inner .legal-date {
+  font-size: 12px;
+  color: #ffffff44;
+  margin-bottom: 28px;
+}
+.legal-inner h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: var(--c2);
+  margin: 24px 0 8px;
+}
+.legal-inner p, .legal-inner li {
+  font-size: 14px;
+  color: #ffffffaa;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+.legal-inner ul { padding-left: 20px; margin-bottom: 12px; }
+.legal-close {
+  display: block;
+  margin: 32px auto 0;
+  background: linear-gradient(135deg, var(--c1), var(--c4));
+  border: none;
+  color: #fff;
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  padding: 12px 40px;
+  border-radius: 999px;
+  cursor: pointer;
+}
 
 /* ---- LIVE COUNTER on landing ---- */
 .live-counter { position: relative; z-index: 1; margin-top: 28px; display: flex; align-items: center; gap: 10px; background: #ffffff0a; border: 1px solid #ffffff15; border-radius: 999px; padding: 10px 24px; }
@@ -676,6 +734,14 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
     <!-- Footer -->
     <div class="about-footer">
       Built with &#10084;&#65039; for curious kids everywhere &mdash; KeyPopKids &copy; 2025
+      <br><br>
+      <a href="#" onclick="openLegal('privacy');return false;">Privacy Policy</a>
+      &middot;
+      <a href="#" onclick="openLegal('terms');return false;">Terms of Service</a>
+      &middot;
+      <a href="mailto:hello@keypopkids.com">Contact Us</a>
+      <br><br>
+      <span style="color:#ffffff18;font-size:11px;">This site may contain sponsored content. KeyPopKids does not collect personal data from children. All session data is stored locally on your device.</span>
     </div>
 
   </div>
@@ -2053,5 +2119,110 @@ function copyShareLink() {
 
   </div>
 </div>
+<!-- PRIVACY POLICY MODAL -->
+<div id="modal-privacy" class="legal-modal">
+  <div class="legal-inner">
+    <h1>Privacy Policy</h1>
+    <div class="legal-date">Last updated: May 2025</div>
+
+    <h2>Overview</h2>
+    <p>KeyPopKids is committed to protecting the privacy of all users, especially children. This Privacy Policy explains what information we collect (if any), how we use it, and your rights.</p>
+
+    <h2>Information We Collect</h2>
+    <p><strong>We do not collect any personal information.</strong> KeyPopKids does not require you to create an account, provide your name, email address, or any other personal details to use the site.</p>
+    <p>All session data &mdash; including key press history, badges earned, and Parent Dashboard statistics &mdash; is stored locally on your device using your browser's localStorage. This data never leaves your device and is never transmitted to our servers or any third party.</p>
+
+    <h2>Children's Privacy (COPPA)</h2>
+    <p>KeyPopKids is designed for young children and is fully compliant with the Children's Online Privacy Protection Act (COPPA). We do not knowingly collect personal information from children under 13. No account creation is required. No data is collected, stored, or transmitted from child users.</p>
+
+    <h2>Cookies & Tracking</h2>
+    <p>KeyPopKids does not use tracking cookies or behavioral advertising. The only browser storage we use is localStorage to save your session stats locally on your own device.</p>
+
+    <h2>Third-Party Services</h2>
+    <p>KeyPopKids uses the following third-party services:</p>
+    <ul>
+      <li><strong>Google Fonts</strong> &mdash; for typography. Google may log font requests. See <a href="https://policies.google.com/privacy" target="_blank" style="color:var(--c2);">Google's Privacy Policy</a>.</li>
+      <li><strong>CountAPI</strong> &mdash; a simple counter to display total global key presses. No personal data is sent.</li>
+      <li><strong>Buy Me a Coffee</strong> &mdash; an optional support button. Only activated if you click it.</li>
+    </ul>
+
+    <h2>Sponsored Content</h2>
+    <p>KeyPopKids may display sponsored content or advertising from time to time. Any sponsorships will be clearly labeled. We only work with family-friendly, child-safe sponsors.</p>
+
+    <h2>Analytics</h2>
+    <p>We may use privacy-friendly analytics tools to understand how visitors use the site. Any analytics we use will be configured to not collect personal data or use identifying cookies.</p>
+
+    <h2>Contact</h2>
+    <p>If you have any questions about this Privacy Policy or your child's privacy, please contact us at: <a href="mailto:hello@keypopkids.com" style="color:var(--c2);">hello@keypopkids.com</a></p>
+
+    <button class="legal-close" onclick="closeLegal('privacy')">Close</button>
+  </div>
+</div>
+
+<!-- TERMS OF SERVICE MODAL -->
+<div id="modal-terms" class="legal-modal">
+  <div class="legal-inner">
+    <h1>Terms of Service</h1>
+    <div class="legal-date">Last updated: May 2025</div>
+
+    <h2>Acceptance of Terms</h2>
+    <p>By using KeyPopKids, you agree to these Terms of Service. If you do not agree, please do not use the site.</p>
+
+    <h2>Description of Service</h2>
+    <p>KeyPopKids is a free, browser-based interactive keyboard game designed for young children. It provides educational and creative activities including free play, letter tracing, and word typing modes.</p>
+
+    <h2>Use of the Site</h2>
+    <p>KeyPopKids is provided for personal, non-commercial use. You agree to use the site only for its intended purpose &mdash; as an educational and entertainment tool for children.</p>
+    <ul>
+      <li>You may not attempt to reverse-engineer, copy, or reproduce the site's code or content without permission.</li>
+      <li>You may not use the site for any unlawful purpose.</li>
+      <li>You may not attempt to interfere with the operation of the site.</li>
+    </ul>
+
+    <h2>Disclaimer of Warranties</h2>
+    <p>KeyPopKids is provided "as is" without any warranties of any kind. We do not guarantee that the site will be available at all times, error-free, or meet your specific requirements.</p>
+
+    <h2>Limitation of Liability</h2>
+    <p>To the fullest extent permitted by law, KeyPopKids and its creators shall not be liable for any indirect, incidental, or consequential damages arising from your use of the site.</p>
+
+    <h2>Changes to the Service</h2>
+    <p>We reserve the right to modify, suspend, or discontinue KeyPopKids at any time without notice. We may also update these Terms of Service at any time. Continued use of the site after changes constitutes acceptance of the new terms.</p>
+
+    <h2>Governing Law</h2>
+    <p>These Terms of Service are governed by the laws of the United States.</p>
+
+    <h2>Contact</h2>
+    <p>For questions about these Terms, contact us at: <a href="mailto:hello@keypopkids.com" style="color:var(--c2);">hello@keypopkids.com</a></p>
+
+    <button class="legal-close" onclick="closeLegal('terms')">Close</button>
+  </div>
+</div>
+
+<script>
+// Legal modal functions
+function openLegal(type) {
+  document.getElementById('modal-' + type).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLegal(type) {
+  document.getElementById('modal-' + type).classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close on backdrop click
+['privacy','terms'].forEach(function(t) {
+  document.getElementById('modal-' + t).addEventListener('click', function(e) {
+    if (e.target === this) closeLegal(t);
+  });
+});
+</script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G95J6K4H57"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G95J6K4H57', { anonymize_ip: true });
+</script>
 </body>
 </html>
