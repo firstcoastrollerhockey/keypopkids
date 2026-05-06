@@ -414,16 +414,70 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 .mode-btn.active { background: linear-gradient(135deg, var(--c1), var(--c4)); color: #fff; border-color: transparent; }
 
 /* ---- TRACING MODE ---- */
-#trace-overlay { display: none; position: absolute; inset: 0; z-index: 15; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+#trace-overlay { display: none; position: absolute; inset: 0; z-index: 15; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; gap: 10px; }
 #trace-overlay.on { display: flex; }
-#trace-letter { font-family: 'Fredoka One', cursive; font-size: clamp(180px, 30vw, 320px); color: #ffffff08; line-height: 1; pointer-events: none; user-select: none; transition: color .3s; }
-#trace-letter.hit { color: #ffffff18; animation: tracehit .4s ease-out; }
+
+/* Big target letter — visible but not fully blocking */
+#trace-letter {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(180px, 30vw, 320px);
+  color: rgba(255,255,255,0.22);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  transition: color .3s, text-shadow .3s;
+  text-shadow: 0 0 60px rgba(107,255,222,0.3), 0 0 120px rgba(107,255,222,0.1);
+  -webkit-text-stroke: 3px rgba(255,255,255,0.35);
+}
+#trace-letter.hit {
+  color: rgba(107,255,222,0.5);
+  text-shadow: 0 0 60px rgba(107,255,222,0.8), 0 0 120px rgba(107,255,222,0.4);
+  -webkit-text-stroke: 3px rgba(107,255,222,0.8);
+  animation: tracehit .4s ease-out;
+}
 @keyframes tracehit { 0%{transform:scale(1.15);} 100%{transform:scale(1);} }
-#trace-prompt { font-family: 'Fredoka One', cursive; font-size: clamp(18px, 3vw, 28px); color: #ffffffcc; margin-top: -20px; letter-spacing: .05em; }
-#trace-progress-wrap { margin-top: 20px; display: flex; gap: 8px; }
-.trace-dot { width: 14px; height: 14px; border-radius: 50%; background: #ffffff20; transition: background .3s; }
-.trace-dot.done { background: var(--c2); box-shadow: 0 0 8px var(--c2); }
-#trace-result { font-family: 'Fredoka One', cursive; font-size: clamp(22px, 4vw, 36px); margin-top: 16px; min-height: 48px; }
+
+/* Prompt pill */
+#trace-prompt {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(18px, 3vw, 28px);
+  color: #fff;
+  letter-spacing: .05em;
+  background: rgba(10, 8, 28, 0.72);
+  border: 2px solid rgba(255,255,255,0.22);
+  border-radius: 999px;
+  padding: 10px 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  margin-top: -10px;
+}
+
+/* Progress dots */
+#trace-progress-wrap { display: flex; gap: 10px; margin-top: 6px; }
+.trace-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: 2px solid rgba(255,255,255,0.3);
+  transition: background .3s, box-shadow .3s;
+}
+.trace-dot.done {
+  background: var(--c2);
+  border-color: var(--c2);
+  box-shadow: 0 0 10px var(--c2), 0 0 20px rgba(107,255,222,0.4);
+}
+
+/* Result feedback pill */
+#trace-result {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(20px, 3.5vw, 34px);
+  min-height: 54px;
+  background: rgba(10, 8, 28, 0.65);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 8px 32px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
 
 /* ---- CLEAR SCREEN btn ---- */
 #clear-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 20; background: #ffffff12; backdrop-filter: blur(10px); border: 1px solid #ffffff20; color: #ffffffaa; font-family: 'Fredoka One', cursive; font-size: 14px; padding: 8px 20px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s, transform .2s; }
@@ -1788,6 +1842,12 @@ function copyShareLink() {
     <div class="dash-section" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
       <button class="dash-pin-btn" onclick="changePin()">&#128274; Change PIN</button>
       <button class="dash-clear-btn" onclick="clearDashData()">&#128465; Clear All Data</button>
+    </div>
+
+    <!-- Support -->
+    <div class="dash-section" style="text-align:center;padding-bottom:20px;">
+      <p style="font-size:13px;color:#ffffff44;margin-bottom:14px;">Enjoying KeyPopKids? Help keep it free!</p>
+      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="keypopkids" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff"></script>
     </div>
 
   </div>
