@@ -232,20 +232,39 @@ var holdInterval = null;
 // ---- Speech + Volume ----
 var synth = window.speechSynthesis;
 var volLevel = 0.9, muted = false;
+var cachedVoice = null;
+
+// Voices load asynchronously in most browsers - cache the best one when ready
+function loadVoice() {
+  var vv = synth.getVoices();
+  if (vv.length === 0) return; // not ready yet
+  var preferred = ['samantha','karen','google us english','zira','daniel','victoria','alex'];
+  for (var p = 0; p < preferred.length; p++) {
+    var match = vv.find(function(v) {
+      return v.name.toLowerCase().indexOf(preferred[p]) > -1;
+    });
+    if (match) { cachedVoice = match; return; }
+  }
+  // Fall back to any English voice
+  var eng = vv.find(function(v) { return v.lang && v.lang.indexOf('en') === 0; });
+  if (eng) cachedVoice = eng;
+}
+
+// Load voices now, and again when the browser fires voiceschanged
+loadVoice();
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = loadVoice;
+}
 
 function speak(text) {
   if (muted || volLevel === 0) return;
   try {
+    // Chrome bug: synth stops working after ~15s of inactivity - resume it
+    if (synth.paused) synth.resume();
     synth.cancel();
     var u = new SpeechSynthesisUtterance(text);
     u.rate = 0.85; u.pitch = 1.2; u.volume = volLevel;
-    var vv = synth.getVoices();
-    var pv = vv.find(function(v) {
-      return v.name.toLowerCase().indexOf('samantha') > -1 ||
-             v.name.toLowerCase().indexOf('karen') > -1 ||
-             v.name.toLowerCase().indexOf('daniel') > -1;
-    });
-    if (pv) u.voice = pv;
+    if (cachedVoice) u.voice = cachedVoice;
     synth.speak(u);
   } catch(e) {}
 }
