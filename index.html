@@ -452,34 +452,43 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 .about-features-title {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(18px, 2.5vw, 24px);
-  color: #ffffff55;
-  margin-bottom: 24px;
+  color: #ffffff44;
+  margin-bottom: 32px;
   text-transform: uppercase;
-  letter-spacing: .12em;
+  letter-spacing: .14em;
 }
 .about-features-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   margin-bottom: 56px;
 }
+@media (max-width: 600px) { .about-features-list { grid-template-columns: 1fr; } }
 .about-feature {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 14px 0;
+  gap: 16px;
+  padding: 20px 20px 20px 0;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.about-feature:last-child { border-bottom: none; }
-.about-feature .af-icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; }
-.about-feature h3 {
+.about-feature:nth-child(odd) { padding-right: 40px; }
+.about-feature:nth-last-child(-n+2) { border-bottom: none; }
+.about-feature .af-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  width: 28px;
+  margin-top: 2px;
+}
+.about-feature-text h3 {
   font-family: 'Fredoka One', cursive;
   font-size: 16px;
-  color: #ffffffdd;
-  margin-right: 8px;
-  white-space: nowrap;
+  color: #fff;
+  margin-bottom: 4px;
 }
-.about-feature p { font-size: 14px; color: #ffffff66; line-height: 1.5; display: inline; }
+.about-feature-text p {
+  font-size: 13px;
+  color: #ffffff66;
+  line-height: 1.6;
+}
 
 .about-privacy {
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -642,15 +651,14 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
     <!-- Features -->
     <div class="about-features-title">What's inside</div>
     <div class="about-features-list">
-      <div class="about-feature"><span class="af-icon">&#127912;</span><h3>Generative Art &mdash; </h3><p>Every keypress paints something unique. Letters create petal bursts, numbers draw rings, special keys make starbursts. No two sessions ever look the same.</p></div>
-      <div class="about-feature"><span class="af-icon">&#128266;</span><h3>Letter Sounds &mdash; </h3><p>Every letter and number is spoken aloud the moment it's pressed, reinforcing recognition in a completely natural, pressure-free way.</p></div>
-      <div class="about-feature"><span class="af-icon">&#9999;&#65039;</span><h3>Letter Tracing &mdash; </h3><p>A large letter appears on screen and kids press the matching key to light it up. Progress dots track each round through the full alphabet.</p></div>
-      <div class="about-feature"><span class="af-icon">&#128216;</span><h3>Word Mode &mdash; </h3><p>Simple words appear for kids to type out letter by letter. Difficulty scales automatically from easy 3-letter words up to harder vocabulary as they improve.</p></div>
-      <div class="about-feature"><span class="af-icon">&#127881;</span><h3>Emoji Explosions &mdash; </h3><p>Hold any key and emojis rain across the screen. Kids love the chaos.</p></div>
-      <div class="about-feature"><span class="af-icon">&#127942;</span><h3>Badges &amp; Milestones &mdash; </h3><p>14 badges to earn, from "First Pop!" on the very first keypress to "Alphabet Champion" for typing every letter. Each one triggers a full-screen celebration.</p></div>
-      <div class="about-feature"><span class="af-icon">&#128444;&#65039;</span><h3>Downloadable Artwork &mdash; </h3><p>At the end of every session kids can save their generative masterpiece as a keepsake image, complete with their name, the date, and session stats.</p></div>
-      <div class="about-feature"><span class="af-icon">&#128202;</span><h3>Parent Dashboard &mdash; </h3><p>A PIN-protected view of session history, time played, favourite keys, a letter heatmap, words completed, letters traced, and all badges earned.</p></div>
-      <div class="about-feature"><span class="af-icon">&#128266;</span><h3>Volume Control &mdash; </h3><p>A slider and mute button in the corner so parents can quietly adjust audio without interrupting the experience.</p></div>
+      <div class="about-feature"><span class="af-icon">&#127912;</span><div class="about-feature-text"><h3>Generative Art</h3><p>Every keypress paints something unique. Letters create petal bursts, numbers draw rings, special keys make starbursts. No two sessions ever look the same.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#128266;</span><div class="about-feature-text"><h3>Letter Sounds</h3><p>Every letter and number is spoken aloud the moment it's pressed, reinforcing recognition naturally and without pressure.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#9999;&#65039;</span><div class="about-feature-text"><h3>Letter Tracing</h3><p>A large letter appears on screen and kids press the matching key to light it up. Progress dots guide them through the full alphabet.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#128216;</span><div class="about-feature-text"><h3>Word Mode</h3><p>Simple words appear for kids to type letter by letter. Difficulty scales automatically from easy 3-letter words up to more challenging vocabulary.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#127881;</span><div class="about-feature-text"><h3>Emoji Explosions</h3><p>Hold any key and emojis rain across the screen. Pure chaos, completely loved by kids.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#127942;</span><div class="about-feature-text"><h3>Badges &amp; Milestones</h3><p>14 badges to earn, from the very first keypress to typing every letter in the alphabet. Each one triggers a full-screen celebration.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#128444;&#65039;</span><div class="about-feature-text"><h3>Downloadable Artwork</h3><p>At the end of every session kids can save their generative masterpiece as a keepsake — with their name, the date, and session stats.</p></div></div>
+      <div class="about-feature"><span class="af-icon">&#128202;</span><div class="about-feature-text"><h3>Parent Dashboard</h3><p>A PIN-protected view of session history, time played, favourite keys, a letter heatmap, words completed, letters traced, and badges earned.</p></div></div>
     </div>
 
     <!-- Privacy -->
