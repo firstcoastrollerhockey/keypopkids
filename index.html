@@ -14,7 +14,6 @@
   --c2: #6bffde;
   --c3: #ffe66b;
   --c4: #6b9fff;
-  --ad: #12102a;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,9 +22,6 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 /* ---- LANDING ---- */
 #landing { min-height: 100vh; display: flex; flex-direction: column; }
 
-.ad-banner { background: var(--ad); border-bottom: 2px solid #ffffff15; display: flex; align-items: center; justify-content: center; padding: 12px 24px; min-height: 90px; position: relative; }
-.ad-label { position: absolute; top: 6px; left: 12px; font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: .1em; }
-.ad-placeholder { width: 728px; max-width: 100%; height: 60px; border: 2px dashed #ffffff20; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 13px; }
 
 .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; position: relative; overflow: hidden; }
 .hero::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, #6b9fff22, transparent 70%); top: -200px; right: -200px; border-radius: 50%; animation: pulse 4s ease-in-out infinite; }
@@ -53,8 +49,6 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 .fc h3 { font-family: 'Fredoka One', cursive; font-size: 17px; color: var(--c2); margin-bottom: 5px; }
 .fc p { font-size: 12px; color: #ffffff88; line-height: 1.5; }
 
-.ad-row { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px; background: var(--ad); border-top: 2px solid #ffffff10; flex-wrap: wrap; }
-.ad-sm { width: 300px; height: 60px; border: 2px dashed #ffffff18; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 12px; }
 
 /* ---- PLAYGROUND ---- */
 #playground {
@@ -132,10 +126,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 
 <!-- LANDING -->
 <div id="landing">
-  <div class="ad-banner">
-    <span class="ad-label">Advertisement</span>
-    <div class="ad-placeholder">Your 728x90 Leaderboard Ad Goes Here</div>
-  </div>
+
   <div class="hero">
     <div class="fl-wrap" id="flwrap"></div>
     <div class="logo">KeyPopKids!</div>
@@ -149,10 +140,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
       <div class="fc"><div class="ic">&#128190;</div><h3>Keep Your Art</h3><p>Download your masterpiece with your name, date, and session stats!</p></div>
     </div>
   </div>
-  <div class="ad-row">
-    <div class="ad-sm">300x60 Ad Unit</div>
-    <div class="ad-sm">300x60 Ad Unit</div>
-  </div>
+
 </div>
 
 <!-- PLAYGROUND -->
