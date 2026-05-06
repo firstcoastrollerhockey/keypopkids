@@ -141,6 +141,10 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
     <div class="logo">KeyPopKids!</div>
     <div class="tagline">The Magical Keyboard Adventure</div>
     <div class="sub">Press keys, make art, hear letters, and create a one-of-a-kind keepsake &mdash; perfect for little explorers!</div>
+    <button class="test-voice-btn" onclick="testVoice()" style="position:relative;z-index:1;background:#ffffff18;border:2px solid #ffffff30;color:#ffffffcc;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:999px;cursor:pointer;margin-bottom:12px;display:block;">
+      &#128266; Tap to Test Voice
+    </button>
+    <div id="voice-status" style="position:relative;z-index:1;font-size:13px;color:#ffffff55;margin-bottom:16px;min-height:18px;"></div>
     <button class="enter-btn" onclick="enterPlayground()">Start Playing &mdash; Full Screen!</button>
     <div class="features">
       <div class="fc"><div class="ic">&#127912;</div><h3>Generative Art</h3><p>Every key paints a unique masterpiece &mdash; no two sessions are the same!</p></div>
@@ -279,6 +283,64 @@ function unlockAudio() {
   var u = new SpeechSynthesisUtterance('');
   u.volume = 0;
   synth.speak(u);
+}
+
+function testVoice() {
+  var status = document.getElementById('voice-status');
+  status.style.color = '#ffe66b';
+  status.textContent = 'Loading voices...';
+
+  // Force pick voice
+  var vv = window.speechSynthesis.getVoices();
+  status.textContent = 'Found ' + vv.length + ' voice(s). Trying to speak...';
+
+  if (vv.length === 0) {
+    // Chrome: voices not ready yet, wait and retry
+    window.speechSynthesis.onvoiceschanged = function() {
+      vv = window.speechSynthesis.getVoices();
+      status.textContent = 'Voices loaded: ' + vv.length + '. Speaking now...';
+      doTestSpeak(status);
+    };
+    // Also try after short delay
+    setTimeout(function() {
+      vv = window.speechSynthesis.getVoices();
+      if (vv.length > 0) doTestSpeak(status);
+    }, 500);
+    return;
+  }
+  doTestSpeak(status);
+}
+
+function doTestSpeak(status) {
+  try {
+    window.speechSynthesis.cancel();
+    setTimeout(function() {
+      var u = new SpeechSynthesisUtterance('A, B, C!');
+      u.rate = 0.85; u.pitch = 1.2; u.volume = 1.0;
+      var vv = window.speechSynthesis.getVoices();
+      // Pick best English voice
+      var preferred = ['google us english','samantha','karen','zira','daniel','victoria','alex'];
+      var picked = null;
+      for (var p = 0; p < preferred.length; p++) {
+        picked = vv.find(function(v){ return v.name.toLowerCase().indexOf(preferred[p]) > -1; });
+        if (picked) break;
+      }
+      if (!picked) picked = vv.find(function(v){ return v.lang && v.lang.indexOf('en') === 0; });
+      if (!picked && vv.length > 0) picked = vv[0];
+      if (picked) {
+        u.voice = picked;
+        cachedVoice = picked;
+        if (status) status.textContent = 'Using voice: ' + picked.name + ' (' + picked.lang + ')';
+      } else {
+        if (status) status.textContent = 'No voice found — using browser default';
+      }
+      u.onend   = function() { if (status) { status.style.color = '#6bffde'; status.textContent = 'Voice is working!'; } audioUnlocked = true; };
+      u.onerror = function(e) { if (status) { status.style.color = '#ff6b6b'; status.textContent = 'Error: ' + e.error; } };
+      window.speechSynthesis.speak(u);
+    }, 100);
+  } catch(err) {
+    if (status) { status.style.color = '#ff6b6b'; status.textContent = 'Exception: ' + err.message; }
+  }
 }
 
 function speak(text) {
