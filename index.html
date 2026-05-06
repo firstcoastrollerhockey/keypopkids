@@ -682,6 +682,10 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 <div id="playground">
   <canvas id="art-canvas"></canvas>
   <div id="hint">Press any key to begin your adventure!</div>
+  <div id="audio-unlock" onclick="unlockAndDismiss()" style="position:absolute;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:rgba(5,4,16,0.5);">
+    <div style="font-family:'Fredoka One',cursive;font-size:clamp(28px,5vw,52px);color:#fff;text-align:center;margin-bottom:16px;filter:drop-shadow(0 0 20px #ff6bdf88);">&#128266; Tap to Start!</div>
+    <div style="font-size:16px;color:#ffffff66;font-family:'Nunito',sans-serif;">Tap or click anywhere to enable sounds</div>
+  </div>
 
   <!-- Badge toast (fullscreen-safe, inside playground) -->
   <div id="badge-toast">
@@ -800,55 +804,24 @@ var holdInterval = null;
 
 // ---- Speech + Volume ----
 var volLevel = 0.5, muted = false;
-var sy = window.speechSynthesis;
-var _voice = null;
-var _voiceReady = false;
 
-function _loadVoice() {
-  var voices = sy.getVoices();
-  if (!voices.length) return;
-  // Preferred voices in order
-  var prefs = ['google us english','samantha','karen','microsoft zira','daniel','victoria','alex'];
-  for (var p = 0; p < prefs.length; p++) {
-    for (var i = 0; i < voices.length; i++) {
-      if (voices[i].name.toLowerCase().indexOf(prefs[p]) > -1) {
-        _voice = voices[i]; _voiceReady = true; return;
-      }
-    }
-  }
-  // Any English voice
-  for (var i = 0; i < voices.length; i++) {
-    if (voices[i].lang && voices[i].lang.indexOf('en') === 0) {
-      _voice = voices[i]; _voiceReady = true; return;
-    }
-  }
-  // Last resort: first available
-  if (voices.length) { _voice = voices[0]; _voiceReady = true; }
-}
-
-// Poll until voices are ready (Chrome async loads them)
-var _voicePoll = setInterval(function() {
-  _loadVoice();
-  if (_voiceReady) clearInterval(_voicePoll);
-}, 100);
-if (sy.onvoiceschanged !== undefined) sy.onvoiceschanged = _loadVoice;
-
+// The ONLY reliable cross-browser approach:
+// Call speechSynthesis.speak() directly inside the keydown handler.
+// No caching, no polling, no async — just speak immediately.
 function speak(text) {
   if (muted || volLevel === 0) return;
+  if (!window.speechSynthesis) return;
   try {
-    if (sy.speaking) sy.cancel();
-    if (sy.paused)   sy.resume();
+    window.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
-    u.rate   = 0.85;
-    u.pitch  = 1.2;
     u.volume = volLevel;
-    if (_voice) u.voice = _voice;
-    // Small delay prevents Chrome from swallowing utterances after cancel()
-    setTimeout(function() { sy.speak(u); }, 30);
+    u.rate   = 0.9;
+    u.pitch  = 1.0;
+    window.speechSynthesis.speak(u);
   } catch(e) {}
 }
 
-function pickVoice() { _loadVoice(); }
+function pickVoice() {}
 
 function setVolume(val) {
   volLevel = parseInt(val) / 100;
@@ -885,6 +858,18 @@ function updateVolUI() {
 }
 
 // ---- Enter / Exit ----
+function unlockAndDismiss() {
+  // Fire a silent utterance to unlock Chrome's audio context on first interaction
+  try {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0.01;
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+  var overlay = document.getElementById('audio-unlock');
+  if (overlay) overlay.style.display = 'none';
+}
+
 function enterPlayground() {
   document.getElementById('landing').style.display = 'none';
   var pg = document.getElementById('playground');
@@ -911,6 +896,8 @@ function exitPlayground() {
   stats = { keys:0, letters:0, numbers:0, emojis:0 };
   consecutiveCount = 0; hintGone = false;
   document.getElementById('hint').classList.remove('gone');
+  var overlay = document.getElementById('audio-unlock');
+  if (overlay) overlay.style.display = 'flex';
   updateStats();
 }
 
@@ -1065,6 +1052,9 @@ document.addEventListener('keydown', function(e) {
     return;
   }
 
+  // Speak FIRST — must be as close to the keydown event as possible
+  if (isV && !wordMode && !traceMode) speak(key.toLowerCase());
+
   stats.keys++;
   if (isL) stats.letters++;
   if (isN) stats.numbers++;
@@ -1072,7 +1062,6 @@ document.addEventListener('keydown', function(e) {
 
   if (isV) {
     consecutiveCount++;
-    speak(key.toLowerCase());
     spawnLetter(key.toUpperCase());
     var x = 80 + Math.random() * (window.innerWidth  - 160);
     var y = 80 + Math.random() * (window.innerHeight - 160);
