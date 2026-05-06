@@ -628,7 +628,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
   </div>
   <div class="live-counter">
     <div class="live-dot"></div>
-    <span><strong id="live-count">...</strong> keys pressed in the last 24 hrs</span>
+    <span><strong id="live-count">...</strong> keys pressed by kids worldwide</span>
   </div>
 
 
@@ -1804,35 +1804,38 @@ function clearScreen() {
 // ============================================================
 // LIVE KEY COUNTER  (localStorage — resets every 24hrs)
 // ============================================================
-function getLiveCount() {
-  try {
-    var data = JSON.parse(localStorage.getItem('kpk_counter') || '{"count":0,"reset":0}');
-    // Reset if older than 24hrs
-    if (Date.now() - data.reset > 86400000) {
-      data = { count: 0, reset: Date.now() };
-      localStorage.setItem('kpk_counter', JSON.stringify(data));
-    }
-    return data.count;
-  } catch(e) { return 0; }
+// ---- Global Key Counter (CountAPI) ----
+var COUNT_NAMESPACE = 'keypopkids.com';
+var COUNT_KEY = 'total-keypresses';
+var COUNT_URL = 'https://api.countapi.xyz/';
+
+function updateLiveCounter() {
+  fetch(COUNT_URL + 'get/' + COUNT_NAMESPACE + '/' + COUNT_KEY)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var el = document.getElementById('live-count');
+      if (el && d && typeof d.value === 'number') {
+        el.textContent = d.value.toLocaleString();
+      }
+    })
+    .catch(function() {});
 }
 
 function incrementLiveCount() {
-  try {
-    var data = JSON.parse(localStorage.getItem('kpk_counter') || '{"count":0,"reset":0}');
-    if (Date.now() - data.reset > 86400000) data = { count: 0, reset: Date.now() };
-    data.count++;
-    localStorage.setItem('kpk_counter', JSON.stringify(data));
-  } catch(e) {}
+  fetch(COUNT_URL + 'hit/' + COUNT_NAMESPACE + '/' + COUNT_KEY)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var el = document.getElementById('live-count');
+      if (el && d && typeof d.value === 'number') {
+        el.textContent = d.value.toLocaleString();
+      }
+    })
+    .catch(function() {});
 }
 
-function updateLiveCounter() {
-  var el = document.getElementById('live-count');
-  if (el) el.textContent = getLiveCount().toLocaleString();
-}
-
-// Update on page load and every 5 seconds
+// Fetch count on page load, then refresh every 30 seconds
 updateLiveCounter();
-setInterval(updateLiveCounter, 5000);
+setInterval(updateLiveCounter, 30000);
 
 // Hook into keydown to increment count (free play mode)
 var origKeydown = null; // handled inline below in keydown listener patch
