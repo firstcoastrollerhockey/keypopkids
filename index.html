@@ -325,7 +325,6 @@ function updateVolUI() {
 
 // ---- Enter / Exit ----
 function enterPlayground() {
-  initSpeechFrame(); // spin up iframe speech engine (must be inside user gesture)
   document.getElementById('landing').style.display = 'none';
   var pg = document.getElementById('playground');
   pg.style.display = 'block';
