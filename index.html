@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gather & Go Travel Co. | Family Vacations & Disney Specialists</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/favicon.png">
+<link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --gold: #f5a623;
+    --gold-light: #ffd980;
+    --magic-blue: #1a6bb5;
+    --magic-teal: #00b4d8;
+    --cream: #fffdf6;
+    --warm-white: #fff9ee;
+    --soft-pink: #fde8f0;
+    --text-dark: #1a1a2e;
+    --text-mid: #4a4a6a;
+    --star: #FFD700;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10, 22, 40, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(245,166,35,0.3);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: #fff; }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--navy) !important;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 800 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--gold-light) !important; transform: scale(1.04); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 120px 40px 80px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 80%, rgba(26,107,181,0.35) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(0,180,216,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 60% 70%, rgba(245,166,35,0.12) 0%, transparent 50%);
+  }
+
+  /* Stars */
+  .stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite;
+    animation-delay: var(--dl, 0s);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* Castle silhouette SVG */
+  /* Castle removed */
+  .castle-wrap { display: none; }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  }
+
+  .hero-eyebrow {
+    text-shadow: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(245,166,35,0.15);
+    border: 1px solid rgba(245,166,35,0.5);
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0 auto 40px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 16px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 15px 36px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: #fff; transform: translateY(-2px); }
+
+  .hero-badges {
+    margin-top: 60px;
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+
+  .hero-badge {
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .hero-badge .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-badge .lbl {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .badge-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.15);
+    height: 40px;
+    align-self: center;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-wrap {
+    background: var(--gold);
+    padding: 14px 0;
+    overflow: hidden;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 32px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  .marquee-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--navy);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 90px 40px; }
+
+  .section-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--magic-blue);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--magic-blue);
+  }
+
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ─── WHY US ─── */
+  .why-us {
+    background: var(--warm-white);
+    text-align: center;
+  }
+
+  .why-us .inner { max-width: 1100px; margin: 0 auto; }
+
+  .why-us .section-sub { margin: 0 auto 60px; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    margin-top: 50px;
+  }
+
+  .why-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 28px;
+    border: 1.5px solid rgba(26,107,181,0.1);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .why-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(10,22,40,0.1);
+  }
+
+  .why-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #e8f4fd, #d0e9f8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.8rem;
+  }
+
+  .why-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .why-card p {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.65;
+  }
+
+  /* ─── DISNEY FEATURE ─── */
+  .disney-feature {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .disney-feature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 90% 50%, rgba(26,107,181,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 30%, rgba(245,166,35,0.1) 0%, transparent 50%);
+  }
+
+  .disney-feature .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .disney-feature .section-eyebrow { color: var(--gold); }
+
+  .disney-feature .section-title { color: #fff; }
+
+  .disney-feature .section-title em { color: var(--magic-teal); }
+
+  .disney-feature .section-sub { color: rgba(255,255,255,0.75); }
+
+  .disney-perks {
+    list-style: none;
+    margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .disney-perks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .perk-check {
+    width: 22px;
+    height: 22px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 0.65rem;
+    color: var(--navy);
+    font-weight: 900;
+  }
+
+  .disney-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .disney-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 18px;
+    padding: 24px 28px;
+    backdrop-filter: blur(8px);
+  }
+
+  .disney-card-title {
+    font-weight: 800;
+    color: var(--gold);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .disney-card p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+
+  .disney-card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ─── CRUISES ─── */
+  .cruises {
+    background: #f0f7ff;
+  }
+
+  .cruises .inner { max-width: 1100px; margin: 0 auto; }
+
+  .cruises-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+
+  .cruise-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .cruise-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(26,107,181,0.1);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .cruise-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  }
+
+  .cruise-card-top {
+    padding: 32px 28px 24px;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cruise-card-top::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+
+  .cruise-card-top .badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+  }
+
+  .cruise-icon { font-size: 2.5rem; margin-bottom: 12px; position: relative; z-index: 2; }
+
+  .cruise-card-top h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 6px;
+    text-shadow: 0 1px 4px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,1), 2px 2px 0px rgba(0,0,0,0.8);
+    position: relative;
+    z-index: 2;
+  }
+
+  .cruise-card-top p {
+    font-size: 0.85rem;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,1), 0 0 16px rgba(0,0,0,1);
+    position: relative;
+    z-index: 2;
+  }
+
+  .cruise-card-body {
+    padding: 24px 28px;
+  }
+
+  .cruise-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cruise-features li {
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cruise-features li::before {
+    content: '✦';
+    color: var(--magic-blue);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+
+  /* ─── DESTINATIONS ROW ─── */
+  .destinations {
+    background: var(--warm-white);
+    text-align: center;
+  }
+
+  .destinations .inner { max-width: 1100px; margin: 0 auto; }
+
+  .dest-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-top: 50px;
+    scrollbar-width: none;
+  }
+
+  .dest-cards::-webkit-scrollbar { display: none; }
+
+  .dest-card {
+    min-width: 220px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    height: 280px;
+    cursor: pointer;
+    transition: transform 0.25s;
+  }
+
+  .dest-card:hover { transform: scale(1.03); }
+
+  .dest-card-bg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 24px 20px;
+  }
+
+  .dest-1 { background: linear-gradient(160deg, #1a3a6b 0%, #0a6eb5 50%, #00b4d8 100%); }
+  .dest-2 { background: linear-gradient(160deg, #0d3d2b 0%, #0f7a52 50%, #2dd4a0 100%); }
+  .dest-3 { background: linear-gradient(160deg, #5b1a6b 0%, #9b45b5 50%, #d88cee 100%); }
+  .dest-4 { background: linear-gradient(160deg, #6b2a0a 0%, #c45a1a 50%, #f5a623 100%); }
+  .dest-5 { background: linear-gradient(160deg, #0a2a5b 0%, #1050a0 50%, #4a90d9 100%); }
+
+  .dest-emoji {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    font-size: 3.5rem;
+  }
+
+  .dest-label h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .dest-label p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonials::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(26,107,181,0.2) 0%, transparent 70%);
+  }
+
+  .testimonials .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .testimonials .section-eyebrow { color: var(--gold); text-align: center; }
+  .testimonials .section-title { color: #fff; text-align: center; }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 50px;
+  }
+
+  .testi-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 30px 28px;
+    transition: background 0.25s;
+  }
+
+  .testi-card:hover { background: rgba(255,255,255,0.1); }
+
+  .testi-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .testi-star { color: var(--star); font-size: 1rem; }
+
+  .testi-text {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .testi-quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.5;
+    line-height: 0;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testi-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .av-1 { background: var(--gold); }
+  .av-2 { background: var(--magic-teal); }
+  .av-3 { background: #ff8fab; }
+  .av-4 { background: #a8e6cf; }
+  .av-5 { background: #ffd6a5; }
+  .av-6 { background: #c9b1ff; }
+
+  .testi-name {
+    font-weight: 800;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+
+  .testi-trip {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  /* ─── HOST AGENCY ─── */
+  .host-agency {
+    background: linear-gradient(135deg, #f0f7ff 0%, #fef9ee 100%);
+    text-align: center;
+  }
+
+  .host-agency .inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .host-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1.5px solid rgba(26,107,181,0.15);
+    border-radius: 16px;
+    padding: 20px 32px;
+    margin-top: 40px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  }
+
+  .host-badge-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--navy);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .host-badge-text h4 {
+    font-weight: 800;
+    color: var(--navy);
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .host-badge-text p {
+    font-size: 0.82rem;
+    color: var(--text-mid);
+    text-align: left;
+    margin-top: 3px;
+  }
+
+  .credentials {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .cred-pill {
+    background: #fff;
+    border: 1.5px solid rgba(26,107,181,0.15);
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ─── CTA BANNER ─── */
+  .cta-banner {
+    background: var(--gold);
+    text-align: center;
+    padding: 70px 40px;
+  }
+
+  .cta-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .cta-banner p {
+    font-size: 1rem;
+    color: rgba(10,22,40,0.7);
+    margin-bottom: 36px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-navy {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 16px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .btn-navy:hover { background: #1a2d50; transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    padding: 50px 40px 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+  }
+
+  .footer-brand p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    margin-top: 14px;
+    max-width: 320px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #fff; }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-bottom p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ─── MAGIC WAND CURSOR TRAIL ─── */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: sparkle-fade 0.6s ease forwards;
+  }
+
+  @keyframes sparkle-fade {
+    0% { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(0.2) translateY(-20px); }
+  }
+
+  /* ─── SCROLL ANIMATION ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    section { padding: 70px 24px; }
+    .disney-feature .inner { grid-template-columns: 1fr; gap: 40px; }
+    .cruises-header { grid-template-columns: 1fr; gap: 30px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .hero-badges { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Gather <span>&</span> Go Travel Co.</a>
+  <ul class="nav-links">
+    <li><a href="disney.html">Disney</a></li>
+    <li><a href="cruises.html">Cruises</a></li>
+    <li><a href="universal.html">Universal</a></li>
+    <li><a href="allInclusive.html">All-Inclusive</a></li>
+    <li><a href="#contact" class="nav-cta">Plan My Trip ✦</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+
+  <!-- Video Background -->
+  <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.55;">
+    <source src="https://res.cloudinary.com/dmcyz4y3j/video/upload/q_auto/f_auto/v1777488389/PromoV3Compressed_txjve8.mp4" type="video/mp4">
+  </video>
+
+  <!-- Starfield -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Castle silhouette -->
+  <div class="castle-wrap">
+    <svg viewBox="0 0 900 350" xmlns="http://www.w3.org/2000/svg" fill="white">
+      <!-- Main castle body -->
+      <rect x="350" y="180" width="200" height="170" rx="4"/>
+      <rect x="390" y="220" width="120" height="130" rx="4"/>
+      <!-- Center tower -->
+      <rect x="420" y="60" width="60" height="160" rx="4"/>
+      <polygon points="420,60 450,10 480,60"/>
+      <!-- Left tower -->
+      <rect x="340" y="100" width="45" height="120" rx="3"/>
+      <polygon points="340,100 362,55 385,100"/>
+      <!-- Right tower -->
+      <rect x="515" y="100" width="45" height="120" rx="3"/>
+      <polygon points="515,100 537,55 560,100"/>
+      <!-- Far left tower -->
+      <rect x="250" y="140" width="38" height="100" rx="3"/>
+      <polygon points="250,140 269,102 288,140"/>
+      <!-- Far right tower -->
+      <rect x="612" y="140" width="38" height="100" rx="3"/>
+      <polygon points="612,140 631,102 650,140"/>
+      <!-- Arch entrance -->
+      <ellipse cx="450" cy="300" rx="36" ry="45" fill="#0a1628"/>
+      <!-- Flags on towers -->
+      <rect x="449" y="8" width="2" height="20" fill="rgba(255,200,0,0.8)"/>
+      <polygon points="451,8 465,14 451,20" fill="rgba(255,200,0,0.8)"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">✦ Your Family Vacation Specialists ✦</div>
+    <h1>
+      Where Families Make
+      <em>Magical Memories</em>
+    </h1>
+    <p>From the first firework to the last wave goodbye — we plan every detail so you can focus on what truly matters: being together. Specializing in Disney, Disney Cruises & all-inclusive resorts.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">✨ Start Planning</a>
+      <a href="#disney" class="btn-ghost">Explore Disney Magic</a>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <span class="num">100%</span>
+        <span class="lbl">Family Focused</span>
+      </div>
+      <div class="badge-divider"></div>
+      <div class="hero-badge">
+        <span class="num">Free</span>
+        <span class="lbl">Planning Service</span>
+      </div>
+      <div class="badge-divider"></div>
+      <div class="hero-badge">
+        <span class="num">5★</span>
+        <span class="lbl">Client Reviews</span>
+      </div>
+      <div class="badge-divider"></div>
+      <div class="hero-badge">
+        <span class="num">100%</span>
+        <span class="lbl">Custom Planned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack">
+    <!-- duplicated for seamless loop -->
+  </div>
+</div>
+
+<!-- WHY US -->
+<section class="why-us" id="about">
+  <div class="inner">
+    <span class="section-eyebrow">Why Families Choose Us</span>
+    <h2 class="section-title">We Handle the Details.<br><em>You Make the Memories.</em></h2>
+    <p class="section-sub">Planning a family trip should be exciting — not overwhelming. We take the stress off your plate so your vacation starts before you even leave home.</p>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-icon">✨</div>
+        <h3>Disney Certified Specialists</h3>
+        <p>We live and breathe Disney. From park hopping strategies to dining reservations and Lightning Lane tips — we know it all so you don't have to.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🚢</div>
+        <h3>Cruise Line Experts</h3>
+        <p>Disney Cruise Line, Royal Caribbean, Carnival & more. We find the perfect sailing for your family's ages, interests, and budget.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎁</div>
+        <h3>Exclusive Perks & Pricing</h3>
+        <p>As part of Boardwalk Travel Agency, we unlock pricing and perks you simply can't get by booking direct. More magic for your money.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">👨‍👩‍👧‍👦</div>
+        <h3>Family-First Planning</h3>
+        <p>Every child's excitement. Every adult's comfort. Every grandparent's accessibility need. We build trips where every family member feels seen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISNEY FEATURE -->
+<section class="disney-feature" id="disney">
+  <div class="inner">
+    <div>
+      <span class="section-eyebrow">Our Specialty</span>
+      <h2 class="section-title">The Most <em>Magical Place</em><br>on Earth — Done Right</h2>
+      <p class="section-sub">Walt Disney World is not just a theme park — it's a world unto itself. With four parks, two water parks, Disney Springs, and dozens of resorts, the planning can feel like a full-time job. That's where we come in.</p>
+      <ul class="disney-perks">
+        <li><span class="perk-check">✓</span> Custom park itineraries built around your family's ages & ride preferences</li>
+        <li><span class="perk-check">✓</span> Dining reservations secured — including the hard-to-get character meals</li>
+        <li><span class="perk-check">✓</span> Lightning Lane & Genie+ strategies maximized for minimal wait times</li>
+        <li><span class="perk-check">✓</span> Resort selection tailored to your budget and must-have amenities</li>
+        <li><span class="perk-check">✓</span> Special occasion setups — birthdays, anniversaries, first visits</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="margin-top: 8px; display: inline-flex;">Plan Our Disney Trip ✨</a>
+    </div>
+
+    <div class="disney-visual reveal">
+      <div class="disney-card">
+        <div class="disney-card-title">🏰 Walt Disney World</div>
+        <p>4 theme parks, 2 water parks, 30+ resort hotels, and experiences that change with every season. Let us build your perfect Disney itinerary.</p>
+      </div>
+      <div class="disney-card-row">
+        <div class="disney-card" style="background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/MagicKingdom.jpg');background-size:cover;background-position:center;position:relative;overflow:hidden;min-height:120px;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);"></div>
+          <div style="position:relative;z-index:2;">
+            <div class="disney-card-title" style="color:var(--gold);text-shadow:0 1px 6px rgba(0,0,0,1),0 0 20px rgba(0,0,0,1);">🎭 Magic Kingdom</div>
+            <p style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 16px rgba(0,0,0,1);">Cinderella's Castle, classic rides, and nightly fireworks your kids will talk about for years.</p>
+          </div>
+        </div>
+        <div class="disney-card" style="background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/Epcot.jpg');background-size:cover;background-position:center;position:relative;overflow:hidden;min-height:120px;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);"></div>
+          <div style="position:relative;z-index:2;">
+            <div class="disney-card-title" style="color:var(--gold);text-shadow:0 1px 6px rgba(0,0,0,1),0 0 20px rgba(0,0,0,1);">🚀 EPCOT</div>
+            <p style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 16px rgba(0,0,0,1);">World cultures, futuristic fun, and the iconic Guardians of the Galaxy coaster.</p>
+          </div>
+        </div>
+      </div>
+      <div class="disney-card-row">
+        <div class="disney-card" style="background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/animalkingdom.avif');background-size:cover;background-position:center;position:relative;overflow:hidden;min-height:120px;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);"></div>
+          <div style="position:relative;z-index:2;">
+            <div class="disney-card-title" style="color:var(--gold);text-shadow:0 1px 6px rgba(0,0,0,1),0 0 20px rgba(0,0,0,1);">🦁 Animal Kingdom</div>
+            <p style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 16px rgba(0,0,0,1);">Pandora — The World of Avatar and thrilling safari adventures.</p>
+          </div>
+        </div>
+        <div class="disney-card" style="background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/hollywoodstudios.avif');background-size:cover;background-position:center;position:relative;overflow:hidden;min-height:120px;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);"></div>
+          <div style="position:relative;z-index:2;">
+            <div class="disney-card-title" style="color:var(--gold);text-shadow:0 1px 6px rgba(0,0,0,1),0 0 20px rgba(0,0,0,1);">🎬 Hollywood Studios</div>
+            <p style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 16px rgba(0,0,0,1);">Star Wars: Galaxy's Edge, Tower of Terror, and Toy Story Land.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISNEY CRUISE FEATURE -->
+<section style="background: #f5f8ff; padding: 90px 40px;" id="cruise-disney">
+  <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+    <!-- Visual side -->
+    <div class="reveal">
+      <div style="background: var(--navy); border-radius: 24px; overflow: hidden; position: relative;">
+        <img src="https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/disneymagic.jpeg" alt="Disney Magic Cruise Ship" style="width:100%;height:200px;object-fit:cover;display:block;">
+        <div style="padding: 40px; position: relative;">
+        <div style="position: absolute; top: -30px; right: -30px; font-size: 8rem; opacity: 0.08;">🚢</div>
+        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 16px;">Disney Cruise Line</h3>
+        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 24px;">The most family-friendly fleet on the ocean. Disney characters, Broadway-caliber shows, adults-only spaces, and destinations around the world.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="background: rgba(255,255,255,0.07); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 1.4rem; margin-bottom: 6px;">🏝️</div>
+            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Castaway Cay</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 3px;">Disney's Private Island</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.07); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 1.4rem; margin-bottom: 6px;">🎭</div>
+            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Live Shows</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 3px;">Broadway-quality nightly</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.07); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 1.4rem; margin-bottom: 6px;">✨</div>
+            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Character Meets</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 3px;">Exclusive to the ship</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.07); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 1.4rem; margin-bottom: 6px;">🍽️</div>
+            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Rotational Dining</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 3px;">Unique experience every night</div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- Text side -->
+    <div>
+      <span class="section-eyebrow">Ahoy, Magic!</span>
+      <h2 class="section-title">Disney Magic<br><em>Sets Sail</em></h2>
+      <p class="section-sub">Imagine your kids meeting Mickey at sea, watching spectacular deck parties under the stars, and waking up at a stunning private island. Disney Cruise Line is the ultimate family bucket list experience — and we make booking it effortless.</p>
+      <ul class="disney-perks" style="margin-top: 20px;">
+        <li style="color: var(--text-dark);"><span class="perk-check">✓</span> Stateroom selection based on your family's size & needs</li>
+        <li style="color: var(--text-dark);"><span class="perk-check">✓</span> Port excursion recommendations curated for kids & adults</li>
+        <li style="color: var(--text-dark);"><span class="perk-check">✓</span> Kids club, spa & dining reservations pre-arranged</li>
+        <li style="color: var(--text-dark);"><span class="perk-check">✓</span> Itineraries: Caribbean, Bahamas, Mediterranean & more</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="margin-top: 28px; display: inline-flex; background: var(--magic-blue);">Book Our Disney Cruise 🚢</a>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER CRUISES -->
+<section class="cruises" id="cruises">
+  <div class="inner">
+    <div class="cruises-header">
+      <div>
+        <span class="section-eyebrow">Beyond Disney</span>
+        <h2 class="section-title">Epic Cruises for<br><em>Every Family</em></h2>
+      </div>
+      <div>
+        <p class="section-sub">Not every family is a Disney family — and that's perfectly okay! We book cruises across all the top lines, finding the perfect fit for your family's vibe, budget, and bucket list.</p>
+      </div>
+    </div>
+    <div class="cruise-cards reveal">
+      <div class="cruise-card">
+        <div class="cruise-card-top" style="background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/RoyalCarribean.jpg');background-size:cover;background-position:center;">
+          <div class="badge">Most Popular</div>
+          <div class="cruise-icon">👑</div>
+          <h3>Royal Caribbean</h3>
+          <p>Adventure-packed mega-ships</p>
+        </div>
+        <div class="cruise-card-body">
+          <ul class="cruise-features">
+            <li>FlowRider surf simulators & rock climbing</li>
+            <li>Kids & teens clubs for every age group</li>
+            <li>Caribbean, Bahamas & European sailings</li>
+            <li>Perfect for thrill-seeking families</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cruise-card">
+        <div class="cruise-card-top" style="background:#0d4a5e;background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/Carnival.jpg');background-size:cover;background-position:center;">
+          <div class="cruise-icon">⚓</div>
+          <h3>Carnival Cruise Line</h3>
+          <p>Fun for every budget</p>
+        </div>
+        <div class="cruise-card-body">
+          <ul class="cruise-features">
+            <li>WaterWorks aqua parks on deck</li>
+            <li>Camp Ocean kids programs</li>
+            <li>Short & long Caribbean itineraries</li>
+            <li>Great value for large families</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cruise-card">
+        <div class="cruise-card-top" style="background:#2d1a5e;background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/Norwegian.jpg');background-size:cover;background-position:center;">
+          <div class="badge" style="background: var(--magic-teal);">Premium</div>
+          <div class="cruise-icon">🌟</div>
+          <h3>Norwegian Cruise Line</h3>
+          <p>Freestyle freedom on the seas</p>
+        </div>
+        <div class="cruise-card-body">
+          <ul class="cruise-features">
+            <li>No set dining times — eat when you want</li>
+            <li>Splash Academy for kids ages 3–17</li>
+            <li>Alaska, Europe, Caribbean & more</li>
+            <li>Ideal for families who love flexibility</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALL-INCLUSIVE / DESTINATIONS -->
+<section class="destinations" id="destinations">
+  <div class="inner">
+    <span class="section-eyebrow">Beyond the Parks & Ships</span>
+    <h2 class="section-title">All-Inclusive <em>Paradise</em><br>Awaits</h2>
+    <p class="section-sub" style="margin: 0 auto;">Sometimes paradise means a pool, a beachside cocktail, and your biggest worry being which flavor of ice cream your kids want next. We've got those trips too.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:50px;" class="reveal">
+
+      <!-- NEGRIL JAMAICA -->
+      <div style="border-radius:22px;overflow:hidden;border:1.5px solid rgba(26,107,181,0.12);transition:transform 0.25s,box-shadow 0.25s;" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+        <div style="height:240px;background:linear-gradient(160deg,#0a3a1a,#1a7a3a,#2aaa5a);background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/beachesnegril.jpeg');background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:22px;position:relative;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.2);"></div>
+          <div style="position:relative;z-index:2;">
+            <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:6px;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 20px rgba(0,0,0,1);">🇯🇲 Jamaica</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#ffffff;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 30px rgba(0,0,0,1),2px 2px 0 rgba(0,0,0,0.8);">Negril, Jamaica</h3>
+          </div>
+        </div>
+        <div style="background:#fff;padding:28px;">
+          <p style="font-size:0.9rem;color:var(--text-mid);line-height:1.7;margin-bottom:18px;">Home to the legendary Seven Mile Beach — one of the most beautiful stretches of white sand in the Caribbean. Negril's laid-back vibe, warm turquoise water, and stunning sunsets make it a perennial family and couples favorite.</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;">
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:#2aaa5a;font-size:0.7rem;">✦</span> Beaches Negril — family all-inclusive resort</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:#2aaa5a;font-size:0.7rem;">✦</span> Sandals Negril — adults-only luxury resort</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:#2aaa5a;font-size:0.7rem;">✦</span> Seven Mile Beach — one of the world's best</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:#2aaa5a;font-size:0.7rem;">✦</span> Warm, welcoming Jamaican culture & cuisine</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:#2aaa5a;font-size:0.7rem;">✦</span> Sesame Street kids programs at Beaches</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TURKS & CAICOS -->
+      <div style="border-radius:22px;overflow:hidden;border:1.5px solid rgba(26,107,181,0.12);transition:transform 0.25s,box-shadow 0.25s;" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+        <div style="height:240px;background:linear-gradient(160deg,#0a2a5a,#0a6ab5,#00b4d8);background-image:url('https://raw.githubusercontent.com/firstcoastrollerhockey/gatherandgotc/main/BeachesTurksCaicos.jpeg');background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:22px;position:relative;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.2);"></div>
+          <div style="position:relative;z-index:2;">
+            <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:6px;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 20px rgba(0,0,0,1);">🇹🇨 Turks & Caicos</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#ffffff;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,1),0 0 30px rgba(0,0,0,1),2px 2px 0 rgba(0,0,0,0.8);">Providenciales, TCI</h3>
+          </div>
+        </div>
+        <div style="background:#fff;padding:28px;">
+          <p style="font-size:0.9rem;color:var(--text-mid);line-height:1.7;margin-bottom:18px;">Grace Bay Beach in Providenciales is consistently ranked the #1 beach in the world — and it's easy to see why. Crystal-clear water in every shade of blue, pristine powder sand, and the flagship Beaches Turks & Caicos resort make this the ultimate Caribbean family destination.</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;">
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:var(--magic-blue);font-size:0.7rem;">✦</span> Beaches Turks & Caicos — flagship family resort</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:var(--magic-blue);font-size:0.7rem;">✦</span> Grace Bay — ranked world's #1 beach</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:var(--magic-blue);font-size:0.7rem;">✦</span> Full on-site waterpark at the resort</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:var(--magic-blue);font-size:0.7rem;">✦</span> 45+ restaurants — all included</li>
+            <li style="font-size:0.85rem;color:var(--text-dark);display:flex;align-items:center;gap:9px;font-weight:600;"><span style="color:var(--magic-blue);font-size:0.7rem;">✦</span> Sesame Street characters daily</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="inner">
+    <span class="section-eyebrow">Real Families. Real Magic.</span>
+    <h2 class="section-title">What Our Families Are Saying</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+        </div>
+        <span class="testi-quote-mark">"</span>
+        <p class="testi-text">We had no idea where to even start with Disney World. Our agent handled absolutely everything — park days, dining, even had a birthday button waiting for our son at check-in. He still says it was the best day of his life. That memory is priceless.</p>
+        <div class="testi-author">
+          <div class="testi-avatar av-1">MR</div>
+          <div>
+            <div class="testi-name">The Rodriguez Family</div>
+            <div class="testi-trip">Magic Kingdom & EPCOT • 7 days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+        </div>
+        <span class="testi-quote-mark">"</span>
+        <p class="testi-text">Disney Cruise Line with our three kids (ages 4, 7, and 11) was a dream. Every single one of them had something tailored just for them. The agent's tip about arriving a day early saved our sanity. We are already booked for next year!</p>
+        <div class="testi-author">
+          <div class="testi-avatar av-2">TJ</div>
+          <div>
+            <div class="testi-name">The Johnson Family</div>
+            <div class="testi-trip">Disney Cruise Line Caribbean • 7 nights</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+        </div>
+        <span class="testi-quote-mark">"</span>
+        <p class="testi-text">I'm a planner by nature and I still could not wrap my head around all the Disney logistics. Gather & Go took over and the trip was flawless. The dining reservations alone were worth using a travel agent. Cinderella's Royal Table? My daughter cried happy tears.</p>
+        <div class="testi-author">
+          <div class="testi-avatar av-3">SP</div>
+          <div>
+            <div class="testi-name">Sarah & the Peters Crew</div>
+            <div class="testi-trip">Walt Disney World • Hollywood Studios + MK</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+        </div>
+        <span class="testi-quote-mark">"</span>
+        <p class="testi-text">We traveled with my parents and our two toddlers — three generations, very different needs. Our agent found a resort that worked for everyone, arranged accessible rooms for my folks, and mapped out a pace that didn't exhaust anyone. That level of care blew us away.</p>
+        <div class="testi-author">
+          <div class="testi-avatar av-4">KW</div>
+          <div>
+            <div class="testi-name">The Williams Family</div>
+            <div class="testi-trip">Disney World • Grand Floridian Resort • 10 days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+        </div>
+        <span class="testi-quote-mark">"</span>
+        <p class="testi-text">We decided on a Royal Caribbean cruise and Gather & Go found us a deal with a free drink package and kids sail free. I would have spent hours searching and never found that on my own. They also set us up with the best shore excursions in Cozumel.</p>
+        <div class="testi-author">
+          <div class="testi-avatar av-5">DM</div>
+          <div>
+            <div class="testi-name">The Martinez Family</div>
+            <div class="testi-trip">Royal Caribbean Western Caribbean • 8 nights</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+        </div>
+        <span class="testi-quote-mark">"</span>
+        <p class="testi-text">Honestly, I didn't think we needed a travel agent. I was so wrong. Our Disney Cruise was perfect from start to finish. Every detail was handled, we got our first choice of dining times, and she even reminded us about the fish extender gift exchange. Above and beyond.</p>
+        <div class="testi-author">
+          <div class="testi-avatar av-6">AK</div>
+          <div>
+            <div class="testi-name">The Kim Family</div>
+            <div class="testi-trip">Disney Cruise Line Bahamas • 5 nights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOST AGENCY -->
+<section class="host-agency" id="about-us">
+  <div class="inner">
+    <span class="section-eyebrow">Our Backing</span>
+    <h2 class="section-title">Boutique Agency.<br><em>Industry-Backed Power.</em></h2>
+    <p class="section-sub" style="margin: 0 auto 16px;">Gather & Go Travel Co. is proud to be a member of <strong>Boardwalk Travel Agency</strong> — a respected host agency with deep relationships across Disney, major cruise lines, and resort brands worldwide. That means you get the personal touch of a small agency with the clout of an industry heavyweight.</p>
+
+    <div class="host-badge">
+      <div class="host-badge-icon">⚓</div>
+      <div class="host-badge-text">
+        <h4>Proudly Hosted by Boardwalk Travel Agency</h4>
+        <p>Recognized preferred partner of Disney, Disney Cruise Line & major cruise lines</p>
+      </div>
+    </div>
+
+    <div class="credentials">
+      <div class="cred-pill">🏰 Disney Authorized Seller</div>
+      <div class="cred-pill">🚢 Cruise Lines International (CLIA)</div>
+      <div class="cred-pill">✈️ IATA Accredited</div>
+      <div class="cred-pill">🌴 Resort Preferred Partner</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner" id="contact">
+  <h2>Your Family's Next Chapter<br>Starts Here ✨</h2>
+  <p>Every great adventure begins with one conversation. Tell us your dream vacation — and we'll make it happen. Planning consultations are always free.</p>
+  <a href="mailto:gatherandgotc@gmail.com" class="btn-navy">📩 Let's Start Planning</a>
+  <div style="margin-top: 20px; font-size: 0.85rem; color: rgba(10,22,40,0.55);">Or reach us at <strong>gatherandgotc@gmail.com</strong> — we'd love to hear from you!</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="font-size: 1.3rem;">Gather <span style="color:#fff;">&</span> Go Travel Co.</a>
+      <p>Specializing in Disney World, Disney Cruise Line, family cruises, and all-inclusive resort vacations. We plan — you enjoy. Life is short. Travel more.</p>
+      <p style="margin-top: 12px; color: rgba(255,255,255,0.3); font-size: 0.78rem;">Proudly part of Boardwalk Travel Agency</p>
+    </div>
+    <div class="footer-col">
+      <h4>Destinations</h4>
+      <ul>
+        <li><a href="#disney">Walt Disney World</a></li>
+        <li><a href="#cruise-disney">Disney Cruise Line</a></li>
+        <li><a href="#cruises">Royal Caribbean</a></li>
+        <li><a href="#cruises">Carnival Cruises</a></li>
+        <li><a href="#destinations">All-Inclusive Resorts</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Get In Touch</h4>
+      <ul>
+        <li><a href="mailto:gatherandgotc@gmail.com">gatherandgotc@gmail.com</a></li>
+        <li><a href="#contact">Free Consultation</a></li>
+        <li><a href="#testimonials">Client Stories</a></li>
+        <li><a href="#about">About Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Gather & Go Travel Co. All rights reserved.</p>
+    <p>Member of Boardwalk Travel Agency · CST #2-XXXXXX</p>
+  </div>
+</footer>
+
+<script>
+// Generate stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    top:${Math.random()*100}%;
+    --d:${(Math.random()*3+2).toFixed(1)}s;
+    --dl:${(Math.random()*4).toFixed(1)}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// Marquee items
+const marqueeItems = [
+  '✨ Disney World Specialists',
+  '🚢 Disney Cruise Line Experts',
+  '🏖️ All-Inclusive Resorts',
+  '👨‍👩‍👧‍👦 Family Vacation Planners',
+  '🏰 Character Dining Reservations',
+  '⚓ Boardwalk Travel Agency Partner',
+  '🌴 Caribbean & Bahamas Cruises',
+  '✨ Free Planning Consultations',
+  '🎉 Special Occasion Specialists',
+  '🌟 Five-Star Client Reviews',
+];
+
+const track = document.getElementById('marqueeTrack');
+const allItems = [...marqueeItems, ...marqueeItems];
+allItems.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 'marquee-item';
+  div.innerHTML = `${item}<span class="marquee-dot"></span>`;
+  track.appendChild(div);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Magic sparkle cursor trail
+document.addEventListener('mousemove', (e) => {
+  if (Math.random() > 0.7) {
+    const spark = document.createElement('div');
+    spark.className = 'sparkle';
+    spark.style.left = e.clientX + 'px';
+    spark.style.top = e.clientY + 'px';
+    const colors = ['#f5a623', '#FFD700', '#00b4d8', '#fff', '#ff8fab'];
+    spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+    document.body.appendChild(spark);
+    setTimeout(() => spark.remove(), 600);
+  }
+});
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUbG2BnV-Lg-QkA05lBnWnlLN2w4ek9zRh-uRS0xIkJgPLYafvTFoHmRTZMgVko9pH/exec';
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  const originalText = btn.textContent;
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  const formData = { formType: 'Home' };
+  e.target.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.name) formData[el.name] = el.value;
+    else if (el.placeholder) formData[el.placeholder] = el.value;
+  });
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    btn.textContent = '✅ Request Sent! We\'ll be in touch soon.';
+    btn.style.background = '#22c55e';
+  } catch(err) {
+    btn.textContent = originalText;
+    btn.disabled = false;
+    alert('Something went wrong. Please email us directly at gatherandgotc@gmail.com');
+  }
+}
+</script>
+</body>
+</html>
