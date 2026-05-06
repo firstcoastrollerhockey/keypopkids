@@ -1804,36 +1804,35 @@ function clearScreen() {
 // ============================================================
 // LIVE KEY COUNTER  (localStorage — resets every 24hrs)
 // ============================================================
-// ---- Global Key Counter (CountAPI) ----
-var COUNT_NAMESPACE = 'keypopkids.com';
-var COUNT_KEY = 'total-keypresses';
-var COUNT_URL = 'https://api.countapi.xyz/';
+// ---- Global Key Counter (countapi.mileshilliard.com) ----
+var COUNT_KEY = 'keypopkids-total-keypresses';
+var COUNT_BASE = 'https://countapi.mileshilliard.com/api/v1/';
 
 function updateLiveCounter() {
-  fetch(COUNT_URL + 'get/' + COUNT_NAMESPACE + '/' + COUNT_KEY)
+  fetch(COUNT_BASE + 'get/' + COUNT_KEY)
     .then(function(r) { return r.json(); })
     .then(function(d) {
       var el = document.getElementById('live-count');
-      if (el && d && typeof d.value === 'number') {
-        el.textContent = d.value.toLocaleString();
+      if (el && d && d.value !== undefined) {
+        el.textContent = parseInt(d.value).toLocaleString();
       }
     })
     .catch(function() {});
 }
 
 function incrementLiveCount() {
-  fetch(COUNT_URL + 'hit/' + COUNT_NAMESPACE + '/' + COUNT_KEY)
+  fetch(COUNT_BASE + 'hit/' + COUNT_KEY)
     .then(function(r) { return r.json(); })
     .then(function(d) {
       var el = document.getElementById('live-count');
-      if (el && d && typeof d.value === 'number') {
-        el.textContent = d.value.toLocaleString();
+      if (el && d && d.value !== undefined) {
+        el.textContent = parseInt(d.value).toLocaleString();
       }
     })
     .catch(function() {});
 }
 
-// Fetch count on page load, then refresh every 30 seconds
+// Fetch count on page load, refresh every 30 seconds
 updateLiveCounter();
 setInterval(updateLiveCounter, 30000);
 
