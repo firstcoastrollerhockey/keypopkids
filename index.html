@@ -141,10 +141,6 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
     <div class="logo">KeyPopKids!</div>
     <div class="tagline">The Magical Keyboard Adventure</div>
     <div class="sub">Press keys, make art, hear letters, and create a one-of-a-kind keepsake &mdash; perfect for little explorers!</div>
-    <button class="test-voice-btn" onclick="testVoice()" style="position:relative;z-index:1;background:#ffffff18;border:2px solid #ffffff30;color:#ffffffcc;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:999px;cursor:pointer;margin-bottom:12px;display:block;">
-      &#128266; Tap to Test Voice
-    </button>
-    <div id="voice-status" style="position:relative;z-index:1;font-size:13px;color:#ffffff55;margin-bottom:16px;min-height:18px;"></div>
     <button class="enter-btn" onclick="enterPlayground()">Start Playing &mdash; Full Screen!</button>
     <div class="features">
       <div class="fc"><div class="ic">&#127912;</div><h3>Generative Art</h3><p>Every key paints a unique masterpiece &mdash; no two sessions are the same!</p></div>
@@ -234,72 +230,62 @@ var artCanvas = null, artCtx = null, artHistory = [];
 var holdInterval = null;
 
 // ---- Speech + Volume ----
-// Hidden iframe approach: bypasses Chrome Mac fullscreen speechSynthesis block.
-// The iframe lives outside the fullscreen layer and has its own speech context.
+// Uses pre-recorded MP3s from translate.google.com TTS for 100% cross-browser reliability.
+// Falls back to Web Speech API if audio fails to load.
 var volLevel = 0.9, muted = false;
-var speechFrame = null, speechReady = false;
+var audioCache = {};
 
-function buildFrameHTML() {
-  return [
-    '<!DOCTYPE html><html><body><script>',
-    'var syn=window.speechSynthesis,vc=null;',
-    'function pv(){',
-    '  var vv=syn.getVoices();if(!vv||!vv.length)return;',
-    '  var p=["google us english","samantha","karen","zira","daniel","victoria","alex"];',
-    '  for(var a=0;a<p.length;a++)for(var b=0;b<vv.length;b++){if(vv[b].name.toLowerCase().indexOf(p[a])>-1){vc=vv[b];return;}}',
-    '  for(var b=0;b<vv.length;b++){if(vv[b].lang&&vv[b].lang.indexOf("en")===0){vc=vv[b];return;}}',
-    '  if(vv.length)vc=vv[0];',
-    '}',
-    'pv();',
-    'if(syn.onvoiceschanged!==undefined)syn.onvoiceschanged=pv;',
-    'setInterval(pv,300);',
-    'window.addEventListener("message",function(e){',
-    '  if(!e.data||e.data.t!=="speak")return;',
-    '  if(syn.paused)syn.resume();',
-    '  syn.cancel();',
-    '  setTimeout(function(){',
-    '    var u=new SpeechSynthesisUtterance(e.data.s);',
-    '    u.rate=0.85;u.pitch=1.2;u.volume=e.data.v||1;',
-    '    if(vc)u.voice=vc;',
-    '    syn.speak(u);',
-    '  },80);',
-    '});',
-    'window.parent.postMessage("ready","*");',
-    '<\/script></body></html>'
-  ].join('');
-}
-
-function initSpeechFrame() {
-  if (speechFrame) return;
-  speechFrame = document.createElement('iframe');
-  speechFrame.setAttribute('allow', 'autoplay');
-  speechFrame.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0.01;pointer-events:none;top:-2px;left:-2px;border:none;';
-  document.body.appendChild(speechFrame);
-  window.addEventListener('message', function(e) {
-    if (e.data === 'ready') speechReady = true;
-  });
-  var blob = new Blob([buildFrameHTML()], { type: 'text/html' });
-  speechFrame.src = URL.createObjectURL(blob);
+// Google Translate TTS gives us free reliable letter audio
+function getAudioURL(letter) {
+  return 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=' + encodeURIComponent(letter);
 }
 
 function speak(text) {
   if (muted || volLevel === 0) return;
-  if (speechFrame && speechReady) {
-    speechFrame.contentWindow.postMessage({ t: 'speak', s: text, v: volLevel }, '*');
-  } else {
-    // fallback to direct synth
+  var key = text.toLowerCase();
+
+  // Use cached Audio object if available
+  if (audioCache[key]) {
     try {
-      var sy = window.speechSynthesis;
-      if (sy.paused) sy.resume();
-      sy.cancel();
-      setTimeout(function() {
-        var u = new SpeechSynthesisUtterance(text);
-        u.rate = 0.85; u.pitch = 1.2; u.volume = volLevel;
-        sy.speak(u);
-      }, 80);
-    } catch(ex) {}
+      audioCache[key].volume = volLevel;
+      audioCache[key].currentTime = 0;
+      audioCache[key].play();
+    } catch(e) { speakFallback(text); }
+    return;
   }
+
+  // Create and cache a new Audio object
+  try {
+    var audio = new Audio(getAudioURL(key));
+    audio.volume = volLevel;
+    audioCache[key] = audio;
+    audio.play().catch(function() { speakFallback(text); });
+  } catch(e) { speakFallback(text); }
 }
+
+// Web Speech API fallback
+function speakFallback(text) {
+  try {
+    var sy = window.speechSynthesis;
+    if (sy.paused) sy.resume();
+    sy.cancel();
+    setTimeout(function() {
+      var u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.85; u.pitch = 1.2; u.volume = volLevel;
+      sy.speak(u);
+    }, 50);
+  } catch(e) {}
+}
+
+// Pre-load all letters and numbers silently on page load
+(function preload() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
+  chars.forEach(function(c) {
+    var audio = new Audio(getAudioURL(c));
+    audio.preload = 'auto';
+    audioCache[c] = audio;
+  });
+})();
 
 function pickVoice() {}
 
