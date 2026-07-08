@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The KeyPopKids Blog — Helping Little Kids Learn the Keyboard</title>
+<meta name="description" content="Playful, research-backed guides for parents on teaching kids to type, letter recognition, screen-time balance, and keyboard fun — from the makers of KeyPopKids.">
+<meta name="keywords" content="KeyPopKids blog, teach kids to type, keyboarding for kids, letter recognition, screen time for toddlers, keyboard games for kids">
+<meta name="author" content="KeyPopKids">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.keypopkids.com/blog/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="The KeyPopKids Blog — Helping Little Kids Learn the Keyboard">
+<meta property="og:description" content="Playful, research-backed guides for parents on teaching kids to type, letter recognition, screen-time balance, and keyboard fun.">
+<meta property="og:url" content="https://www.keypopkids.com/blog/">
+<meta property="og:site_name" content="KeyPopKids">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The KeyPopKids Blog">
+<meta name="twitter:description" content="Playful, research-backed guides for parents on teaching kids to type, letter recognition, and keyboard fun.">
+
+<!-- Blog structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "The KeyPopKids Blog",
+  "description": "Playful, research-backed guides for parents on teaching kids to type, letter recognition, screen-time balance, and keyboard fun.",
+  "url": "https://www.keypopkids.com/blog/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "KeyPopKids",
+    "logo": { "@type": "ImageObject", "url": "https://www.keypopkids.com/logo.png" }
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "How to Teach Your Child to Type: A Step-by-Step Guide by Age",
+      "url": "https://www.keypopkids.com/blog/how-to-teach-your-child-to-type/",
+      "datePublished": "2026-07-07",
+      "author": { "@type": "Organization", "name": "KeyPopKids" }
+    }
+  ]
+}
+</script>
+
+<!-- Breadcrumb structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.keypopkids.com" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.keypopkids.com/blog/" }
+  ]
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+
+:root {
+  --bg: #0d0b1e;
+  --card: #1a1535;
+  --c1: #ff6bdf;
+  --c2: #6bffde;
+  --c3: #ffe66b;
+  --c4: #6b9fff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: #ffffffdd;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a { color: var(--c2); }
+
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(60% 40% at 20% 0%, #ff6bdf22, transparent 70%),
+    radial-gradient(50% 40% at 90% 10%, #6b9fff22, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Nav */
+.nav {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1000px; margin: 0 auto; padding: 22px 24px;
+}
+.nav .brand {
+  font-family: 'Fredoka One', cursive; font-size: 26px; text-decoration: none;
+  background: linear-gradient(135deg, var(--c1), var(--c3), var(--c2));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav .nav-cta {
+  font-family: 'Fredoka One', cursive; font-size: 14px; text-decoration: none; color: #fff;
+  background: linear-gradient(135deg, var(--c1), var(--c4));
+  padding: 9px 18px; border-radius: 999px; white-space: nowrap;
+}
+
+/* Hero */
+.hero { position: relative; z-index: 1; text-align: center; max-width: 720px; margin: 0 auto; padding: 34px 24px 10px; }
+.hero .eyebrow {
+  display: inline-block; font-family: 'Fredoka One', cursive; font-size: 13px; letter-spacing: 1px;
+  color: var(--bg); background: var(--c3); padding: 4px 14px; border-radius: 999px; margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Fredoka One', cursive; font-weight: 400;
+  font-size: clamp(34px, 7vw, 56px); line-height: 1.1; margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--c1), var(--c3), var(--c2));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p { font-size: 19px; color: #ffffffbb; }
+
+/* Post grid */
+.posts {
+  position: relative; z-index: 1;
+  max-width: 1000px; margin: 0 auto; padding: 40px 24px 20px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;
+}
+.post-card {
+  background: var(--card); border: 1px solid #ffffff14; border-radius: 20px;
+  padding: 26px 26px 28px; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.post-card:hover { transform: translateY(-4px); border-color: #ff6bdf55; box-shadow: 0 16px 40px #00000055; }
+.post-card .tag {
+  align-self: flex-start; font-family: 'Fredoka One', cursive; font-size: 12px; color: var(--bg);
+  background: var(--c2); padding: 3px 12px; border-radius: 999px; margin-bottom: 14px;
+}
+.post-card h2 {
+  font-family: 'Fredoka One', cursive; font-weight: 400; font-size: 22px; line-height: 1.25;
+  color: #fff; margin-bottom: 10px;
+}
+.post-card p { font-size: 15px; color: #ffffffaa; margin-bottom: 18px; flex-grow: 1; }
+.post-card .meta { font-size: 13px; color: #ffffff66; display: flex; align-items: center; gap: 10px; }
+.post-card .read-more { color: var(--c2); font-weight: 900; font-size: 14px; margin-top: 14px; }
+
+/* Featured (first) card spans wider on large screens */
+.post-card.featured { grid-column: 1 / -1; border-left: 4px solid var(--c1); }
+.post-card.featured h2 { font-size: 26px; }
+
+/* Coming soon */
+.soon {
+  position: relative; z-index: 1; max-width: 1000px; margin: 20px auto 0; padding: 0 24px;
+}
+.soon h3 {
+  font-family: 'Fredoka One', cursive; font-weight: 400; font-size: 20px; color: var(--c4); margin-bottom: 14px;
+}
+.soon ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.soon li {
+  background: #ffffff0a; border: 1px dashed #ffffff22; border-radius: 999px;
+  padding: 8px 16px; font-size: 14px; color: #ffffff88;
+}
+
+/* Play CTA */
+.play-cta {
+  position: relative; z-index: 1; max-width: 1000px; margin: 46px auto 0; padding: 0 24px;
+}
+.play-cta .inner {
+  background: linear-gradient(135deg, #ff6bdf1f, #6b9fff1f);
+  border: 1px solid #ffffff1f; border-radius: 22px; padding: 34px 28px; text-align: center;
+}
+.play-cta h3 { font-family: 'Fredoka One', cursive; font-weight: 400; font-size: 24px; color: #fff; margin-bottom: 8px; }
+.play-cta p { color: #ffffffcc; margin-bottom: 20px; }
+.play-cta a.btn {
+  display: inline-block; font-family: 'Fredoka One', cursive; text-decoration: none; color: #fff;
+  background: linear-gradient(135deg, var(--c1), var(--c4));
+  padding: 14px 34px; border-radius: 999px; font-size: 18px; box-shadow: 0 10px 30px #ff6bdf33;
+}
+
+/* Footer */
+.footer {
+  position: relative; z-index: 1; text-align: center; color: #ffffff55; font-size: 13px;
+  padding: 40px 24px 50px; border-top: 1px solid #ffffff10; margin-top: 56px;
+}
+.footer a { color: #ffffff88; text-decoration: none; margin: 0 6px; }
+.footer a:hover { color: var(--c2); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="https://www.keypopkids.com">KeyPopKids</a>
+  <a class="nav-cta" href="https://www.keypopkids.com">▶ Play the Game</a>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">THE KEYPOPKIDS BLOG</span>
+  <h1>Keyboard tips for curious little kids</h1>
+  <p>Playful, research-backed guides for parents — teaching kids to type, learning letters, and keeping screen time healthy and fun.</p>
+</header>
+
+<main class="posts">
+
+  <!-- Featured post -->
+  <a class="post-card featured" href="https://www.keypopkids.com/blog/how-to-teach-your-child-to-type/">
+    <span class="tag">Learning to Type</span>
+    <h2>How to Teach Your Child to Type: A Step-by-Step Guide by Age</h2>
+    <p>From toddlers exploring the keyboard to kids mastering touch typing — a practical, age-by-age roadmap with realistic milestones, screen-time guidance, and typing-speed benchmarks, backed by pediatric and education research.</p>
+    <div class="meta">
+      <span>10 min read</span> · <span>July 7, 2026</span>
+    </div>
+    <span class="read-more">Read the guide →</span>
+  </a>
+
+  <!-- Future posts drop in here as more <a class="post-card"> blocks -->
+
+</main>
+
+<section class="play-cta">
+  <div class="inner">
+    <h3>Try KeyPopKids free</h3>
+    <p>Every keypress makes color, sound, and spoken letters — the friendliest first keyboard for little ones. No sign-ups, no ads, nothing collected.</p>
+    <a class="btn" href="https://www.keypopkids.com">Play the Game →</a>
+  </div>
+</section>
+
+<div class="footer">
+  Built with ♥ for curious kids everywhere — KeyPopKids © 2026
+  <br><br>
+  <a href="https://www.keypopkids.com">Home</a> ·
+  <a href="https://www.keypopkids.com/blog/">Blog</a> ·
+  <a href="mailto:hello@keypopkids.com">Contact</a>
+</div>
+
+</body>
+</html>
