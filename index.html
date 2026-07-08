@@ -1978,13 +1978,16 @@ var COUNT_KEY = 'keypopkids-total-keypresses';
 var COUNT_BASE = 'https://countapi.mileshilliard.com/api/v1/';
 
 // The on-screen number is driven LOCALLY so it grows instantly and accurately
-// on every keypress. We batch the real total up to the global counter in the
-// background (one request every few seconds) instead of one request per key --
-// firing a network request per keystroke was why a 1,000-key session only
-// registered ~100: the browser/API dropped the flood of rapid requests.
+// on every keypress. In the background we sync those keypresses up to the shared
+// global counter using a THROTTLED queue: the counter service only supports
+// increment-by-one ("hit"), so we drain the queue a few requests at a time and
+// only remove a keypress once its request SUCCEEDS. Nothing is lost and we never
+// flood the network -- firing one request per key all at once was why a
+// 1,000-key session used to register only ~100.
 var liveServerBase = 0;   // last known global total from the server
-var livePending    = 0;   // local keypresses not yet flushed to the server
-var liveFlushing   = false;
+var livePending    = 0;   // local keypresses not yet confirmed by the server
+var liveInFlight   = 0;   // hit requests currently open
+var LIVE_MAX_CONC  = 6;   // max simultaneous requests
 
 function liveRender() {
   var el = document.getElementById('live-count');
@@ -1998,7 +2001,7 @@ function liveSetBase(v) {
   liveRender();
 }
 
-// Pull the latest global total (also picks up other kids' keypresses).
+// Pull the latest global total (also picks up other kids' keypresses worldwide).
 function updateLiveCounter() {
   fetch(COUNT_BASE + 'get/' + COUNT_KEY)
     .then(function(r) { return r.json(); })
@@ -2006,45 +2009,49 @@ function updateLiveCounter() {
     .catch(function() {});
 }
 
-// Called on EVERY keypress -- instant, no network. Just a local tally.
+// Called on EVERY keypress -- instant, no network. Local tally + kick the queue.
 function incrementLiveCount() {
   livePending++;
   liveRender();
+  pumpLiveHits();
 }
 
-// Push everything accumulated since the last flush in a SINGLE request.
-function flushLiveCount() {
-  if (liveFlushing || livePending <= 0) return;
-  var n = livePending;
-  liveFlushing = true;
-  fetch(COUNT_BASE + 'update/' + COUNT_KEY + '?amount=' + n)
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      livePending -= n;                                   // these are now committed
-      if (d && d.value !== undefined) liveSetBase(d.value); // authoritative new total
-      liveFlushing = false;
-      liveRender();
-    })
-    .catch(function() { liveFlushing = false; });          // keep pending, retry next tick
+// Drain the queue: keep up to LIVE_MAX_CONC 'hit' requests in flight. A key is
+// only subtracted once its hit succeeds, so failures simply retry next pump.
+function pumpLiveHits() {
+  while (liveInFlight < LIVE_MAX_CONC && (livePending - liveInFlight) > 0) {
+    liveInFlight++;
+    fetch(COUNT_BASE + 'hit/' + COUNT_KEY)
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        liveInFlight--;
+        if (livePending > 0) livePending--;
+        if (d && d.value !== undefined) liveSetBase(d.value);
+        liveRender();
+        pumpLiveHits();
+      })
+      .catch(function() { liveInFlight--; });
+  }
 }
 
-// Fetch the base once, refresh it every 20s, and flush local keypresses every 2s.
+// Load the base once, refresh every 20s, and keep the queue draining every 400ms
+// (covers any keys left over after a fast burst).
 updateLiveCounter();
 setInterval(updateLiveCounter, 20000);
-setInterval(flushLiveCount, 2000);
+setInterval(pumpLiveHits, 400);
 
-// Make sure a session's keypresses aren't lost when the page is closed/hidden.
-function flushLiveCountBeacon() {
-  if (livePending <= 0) return;
-  var n = livePending;
-  try {
-    fetch(COUNT_BASE + 'update/' + COUNT_KEY + '?amount=' + n, { keepalive: true });
-    livePending -= n;
-  } catch (err) {}
+// On close/hide, fire keepalive hits for a few remaining keys so they still count
+// (capped so we never spam on exit).
+function flushLiveOnExit() {
+  var n = Math.min(livePending, 30);
+  for (var i = 0; i < n; i++) {
+    try { fetch(COUNT_BASE + 'hit/' + COUNT_KEY, { keepalive: true }); } catch (err) {}
+  }
+  livePending -= n;
 }
-window.addEventListener('pagehide', flushLiveCountBeacon);
+window.addEventListener('pagehide', flushLiveOnExit);
 document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'hidden') flushLiveCountBeacon();
+  if (document.visibilityState === 'hidden') flushLiveOnExit();
 });
 
 // Hook into keydown to increment count (free play mode)
