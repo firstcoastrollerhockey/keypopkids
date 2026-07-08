@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.keypopkids.com/sitemap.xml
+Sitemap: https://keypopkids.com/sitemap.xml
