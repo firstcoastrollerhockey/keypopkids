@@ -11,7 +11,13 @@
 <meta property="og:description" content="A free keyboard game for toddlers and young kids. Press keys to make colorful art, learn letters, earn badges and create a keepsake. Best on desktop or laptop.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.keypopkids.com">
-<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://www.keypopkids.com/">
+<meta property="og:site_name" content="KeyPopKids">
+<meta property="og:image" content="https://www.keypopkids.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://www.keypopkids.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="KeyPopKids! - The Magical Keyboard Adventure">
 <meta name="twitter:description" content="Free keyboard game for toddlers. Press keys, make art, learn letters, earn badges. Best on desktop or laptop with a keyboard.">
 <meta name="robots" content="index, follow">
@@ -679,6 +685,35 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #fff; mi
 .sbtn.wa  { background: #25d366; color: #fff; }
 .sbtn.cp  { background: #ffffff22; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "KeyPopKids",
+  "url": "https://www.keypopkids.com/",
+  "description": "A free keyboard game for toddlers and young kids. Press keys to make colorful art, learn letters and words, earn badges, and create a downloadable keepsake."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "KeyPopKids",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any (web browser)",
+  "url": "https://www.keypopkids.com/",
+  "description": "A free, private keyboard game for toddlers and young kids. Press keys to make colorful art, hear letters spoken aloud, learn words, earn badges, and create a downloadable keepsake. No accounts, no ads, no data collected.",
+  "image": "https://www.keypopkids.com/og-image.png",
+  "inLanguage": "en",
+  "isFamilyFriendly": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "KeyPopKids",
+    "logo": { "@type": "ImageObject", "url": "https://www.keypopkids.com/logo.png" }
+  }
+}
+</script>
 </head>
 <body>
 
@@ -1984,40 +2019,24 @@ var COUNT_BASE = 'https://countapi.mileshilliard.com/api/v1/';
 // only remove a keypress once its request SUCCEEDS. Nothing is lost and we never
 // flood the network -- firing one request per key all at once was why a
 // 1,000-key session used to register only ~100.
-var liveServerBase = 0;   // last known global total from the server
-var livePending    = 0;   // local keypresses not yet confirmed by the server
-var liveInFlight   = 0;   // hit requests currently open
-var LIVE_MAX_CONC  = 6;   // max simultaneous requests
+var liveServerBase = 0, livePending = 0, liveInFlight = 0, LIVE_MAX_CONC = 6;
 
 function liveRender() {
   var el = document.getElementById('live-count');
   if (el) el.textContent = (liveServerBase + livePending).toLocaleString();
 }
-
-// Only ever let the base move up, so the number never visibly jumps backwards.
 function liveSetBase(v) {
   v = parseInt(v);
   if (!isNaN(v) && v > liveServerBase) liveServerBase = v;
   liveRender();
 }
-
-// Pull the latest global total (also picks up other kids' keypresses worldwide).
 function updateLiveCounter() {
   fetch(COUNT_BASE + 'get/' + COUNT_KEY)
     .then(function(r) { return r.json(); })
     .then(function(d) { if (d && d.value !== undefined) liveSetBase(d.value); })
     .catch(function() {});
 }
-
-// Called on EVERY keypress -- instant, no network. Local tally + kick the queue.
-function incrementLiveCount() {
-  livePending++;
-  liveRender();
-  pumpLiveHits();
-}
-
-// Drain the queue: keep up to LIVE_MAX_CONC 'hit' requests in flight. A key is
-// only subtracted once its hit succeeds, so failures simply retry next pump.
+function incrementLiveCount() { livePending++; liveRender(); pumpLiveHits(); }
 function pumpLiveHits() {
   while (liveInFlight < LIVE_MAX_CONC && (livePending - liveInFlight) > 0) {
     liveInFlight++;
@@ -2027,21 +2046,14 @@ function pumpLiveHits() {
         liveInFlight--;
         if (livePending > 0) livePending--;
         if (d && d.value !== undefined) liveSetBase(d.value);
-        liveRender();
-        pumpLiveHits();
+        liveRender(); pumpLiveHits();
       })
       .catch(function() { liveInFlight--; });
   }
 }
-
-// Load the base once, refresh every 20s, and keep the queue draining every 400ms
-// (covers any keys left over after a fast burst).
 updateLiveCounter();
 setInterval(updateLiveCounter, 20000);
 setInterval(pumpLiveHits, 400);
-
-// On close/hide, fire keepalive hits for a few remaining keys so they still count
-// (capped so we never spam on exit).
 function flushLiveOnExit() {
   var n = Math.min(livePending, 30);
   for (var i = 0; i < n; i++) {
